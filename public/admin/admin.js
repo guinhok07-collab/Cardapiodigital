@@ -147,6 +147,15 @@
       ' data-field="price" value="' +
       item.price +
       '" /></label>' +
+      '<label>Disponível <input type="checkbox" data-ci="' +
+      ci +
+      '" data-ii="' +
+      ii +
+      '"' +
+      siAttr +
+      ' data-field="available" ' +
+      (item.available === false ? "" : "checked") +
+      " /></label>" +
       '<label>Imagem (URL) <input type="text" data-ci="' +
       ci +
       '" data-ii="' +
@@ -189,6 +198,7 @@
     var f = inp.getAttribute("data-field");
     var v = inp.value;
     if (f === "price") v = parseFloat(v) || 0;
+    if (f === "available") v = !!inp.checked;
     if (f === "image" && !String(v).trim()) v = null;
     var si = inp.dataset.si;
     if (si === undefined || si === "") {
@@ -605,6 +615,7 @@
       var ii = +inp.dataset.ii;
       var f = inp.getAttribute("data-field");
       var v = inp.value;
+      if (f === "available") v = !!inp.checked;
       if (f === "price") v = parseFloat(v) || 0;
       if (f === "image" && !String(v).trim()) v = null;
       var si = inp.dataset.si;

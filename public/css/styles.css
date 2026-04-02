@@ -843,6 +843,13 @@ body.page-home:not(.page-home--clean) {
   cursor: pointer;
 }
 
+.btn-add-cart.is-unavailable {
+  background: rgba(148, 163, 184, 0.18);
+  color: rgba(148, 163, 184, 1);
+  cursor: pointer;
+  opacity: 0.95;
+}
+
 .item-row-actions .btn-add-cart {
   margin-top: 0;
   width: auto;

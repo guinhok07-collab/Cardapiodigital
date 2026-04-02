@@ -158,6 +158,7 @@ function buildItemCard(item, catId, catTitle, sectionTitle, categoryTheme) {
   const displayName = sectionTitle
     ? `${sectionTitle} — ${item.name}`
     : item.name;
+  const available = item.available !== false;
 
   const art = document.createElement("article");
   art.className = "item-card";
@@ -190,9 +191,14 @@ function buildItemCard(item, catId, catTitle, sectionTitle, categoryTheme) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "btn-add-cart";
-  btn.textContent = "Adicionar";
-  btn.setAttribute("aria-label", "Adicionar ao carrinho");
+  btn.textContent = available ? "Adicionar" : "Indisponível";
+  btn.setAttribute("aria-label", available ? "Adicionar ao carrinho" : "Indisponível no momento");
+  if (!available) btn.classList.add("is-unavailable");
   btn.addEventListener("click", () => {
+    if (!available) {
+      toast("Indisponível no momento");
+      return;
+    }
     addItem({
       catId,
       catTitle,

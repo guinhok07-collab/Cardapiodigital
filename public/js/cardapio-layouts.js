@@ -29,7 +29,17 @@ export function setBodyLayoutClass(layout) {
 
 function bindAdd(btn, item, catId, catTitle, sectionTitle, onToast) {
   const displayName = sectionTitle ? `${sectionTitle} — ${item.name}` : item.name;
+  const available = item.available !== false;
+  if (!available) {
+    btn.classList.add("is-unavailable");
+    btn.setAttribute("title", "Indisponível no momento");
+    btn.setAttribute("aria-label", "Indisponível no momento");
+  }
   btn.addEventListener("click", () => {
+    if (!available) {
+      onToast?.("Indisponível no momento");
+      return;
+    }
     addItem({
       catId,
       catTitle,
