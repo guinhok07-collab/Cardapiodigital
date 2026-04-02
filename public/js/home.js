@@ -18,7 +18,24 @@ function renderHome(data) {
     "Escolha uma categoria, adicione ao carrinho e finalize no WhatsApp.";
 
   const brand = document.getElementById("top-brand");
-  if (brand) brand.textContent = store.name || "Cardápio";
+  const logoEl = document.getElementById("top-brand-logo");
+  var useLogo =
+    store.logoMode === "image" && (store.logoImage || "").trim().length > 0;
+  if (useLogo && logoEl) {
+    logoEl.src = String(store.logoImage).trim();
+    logoEl.alt = store.name ? String(store.name) : "Logo";
+    logoEl.classList.remove("hidden");
+    if (brand) brand.classList.add("hidden");
+  } else {
+    if (logoEl) {
+      logoEl.removeAttribute("src");
+      logoEl.classList.add("hidden");
+    }
+    if (brand) {
+      brand.classList.remove("hidden");
+      brand.textContent = store.name || "Cardápio";
+    }
+  }
 
   const footAddr = document.getElementById("footer-address");
   if (footAddr) {

@@ -87,6 +87,10 @@ body.page-home {
   z-index: 20;
 }
 
+.page-home .top-bar-brand-link {
+  color: #fff;
+}
+
 .page-home .top-bar-brand {
   color: #fff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
@@ -176,10 +180,35 @@ body.page-home {
   text-underline-offset: 3px;
 }
 
+.top-bar-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  color: inherit;
+  min-height: 2.5rem;
+}
+
+.top-brand-logo {
+  max-height: 42px;
+  width: auto;
+  max-width: min(200px, 52vw);
+  object-fit: contain;
+  display: block;
+}
+
+.top-brand-logo.hidden {
+  display: none !important;
+}
+
 .top-bar-brand {
   font-weight: 700;
   text-decoration: none;
   color: inherit;
+}
+
+.top-bar-brand.hidden {
+  display: none !important;
 }
 
 .cart-link {
@@ -997,7 +1026,7 @@ body.page-home {
 .page-cardapio.cardapio-theme-burger {
   background-color: #0a0a0a;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.65)),
-    var(--burger-bg-photo);
+    var(--cardapio-bg-photo, var(--burger-bg-photo));
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
@@ -1106,7 +1135,7 @@ body.page-home {
 .page-cardapio.cardapio-theme-pastel {
   background-color: #0a0a0a;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.72)),
-    var(--cat-bg-pastel);
+    var(--cardapio-bg-photo, var(--cat-bg-pastel));
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
@@ -1213,7 +1242,7 @@ body.page-home {
 .page-cardapio.cardapio-theme-pizza {
   background-color: #0c0a0a;
   background-image: linear-gradient(rgba(24, 14, 14, 0.62), rgba(12, 8, 8, 0.78)),
-    var(--cat-bg-pizza);
+    var(--cardapio-bg-photo, var(--cat-bg-pizza));
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
@@ -1308,7 +1337,7 @@ body.page-home {
 .page-cardapio.cardapio-theme-sweet {
   background-color: #1c1917;
   background-image: linear-gradient(rgba(28, 22, 18, 0.58), rgba(20, 16, 14, 0.8)),
-    var(--cat-bg-sweet);
+    var(--cardapio-bg-photo, var(--cat-bg-sweet));
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
@@ -1381,7 +1410,7 @@ body.page-home {
       rgba(244, 244, 245, 0.9),
       rgba(244, 244, 245, 0.94)
     ),
-    var(--cat-bg-drinks);
+    var(--cardapio-bg-photo, var(--cat-bg-drinks));
   background-size: cover;
   background-position: center;
   background-attachment: scroll;

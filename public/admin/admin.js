@@ -1,5 +1,10 @@
 (function () {
+  /**
+   * Senha do painel — altere antes de publicar (o ficheiro fica no repositório).
+   * Não há servidor: quem tiver este ficheiro pode ver a senha.
+   */
   var ADMIN_PASSWORD = "admin123";
+
   var SESSION_KEY = "cardapio_admin_ok_v1";
   var STORAGE_PREVIEW = "cardapio_menu_preview_v1";
   var menuData = null;
@@ -49,6 +54,16 @@
     $("f-headline").value = s.headline || "";
     $("f-subhead").value = s.subhead || "";
     $("f-address").value = s.address || "";
+    $("f-logo-mode").value = s.logoMode === "image" ? "image" : "text";
+    $("f-logo-image").value = s.logoImage || "";
+    toggleLogoFields();
+  }
+
+  function toggleLogoFields() {
+    var img = $("f-logo-image");
+    if (!img) return;
+    var mode = $("f-logo-mode").value;
+    img.closest("label").style.display = mode === "image" ? "" : "none";
   }
 
   function readStoreForm() {
@@ -58,54 +73,72 @@
       subhead: $("f-subhead").value.trim() || "",
       whatsapp: $("f-wa").value.replace(/\D/g, "") || "5511999999999",
       address: $("f-address").value.trim() || "",
+      logoMode: $("f-logo-mode").value === "image" ? "image" : "text",
+      logoImage: $("f-logo-image").value.trim() || "",
     };
-    if (menuData.store && "heroImage" in menuData.store) {
-      delete menuData.store.heroImage;
-    }
   }
 
-  function renderItem(ci, ii, item) {
+  function renderItem(ci, ii, item, si) {
     var row = document.createElement("div");
     row.className = "item-grid";
+    var siAttr = si == null ? "" : ' data-si="' + si + '"';
     row.innerHTML =
       '<label>Nome <input type="text" data-ci="' +
       ci +
       '" data-ii="' +
       ii +
-      '" data-field="name" value="' +
+      '"' +
+      siAttr +
+      ' data-field="name" value="' +
       escapeAttr(item.name) +
       '" /></label>' +
       '<label>Descrição <input type="text" data-ci="' +
       ci +
       '" data-ii="' +
       ii +
-      '" data-field="description" value="' +
+      '"' +
+      siAttr +
+      ' data-field="description" value="' +
       escapeAttr(item.description) +
       '" /></label>' +
       '<label>Preço <input type="number" step="0.01" data-ci="' +
       ci +
       '" data-ii="' +
       ii +
-      '" data-field="price" value="' +
+      '"' +
+      siAttr +
+      ' data-field="price" value="' +
       item.price +
       '" /></label>' +
-      '<label>Imagem URL <input type="text" data-ci="' +
+      '<label>Imagem (URL) <input type="text" data-ci="' +
       ci +
       '" data-ii="' +
       ii +
-      '" data-field="image" value="' +
+      '"' +
+      siAttr +
+      ' data-field="image" value="' +
       escapeAttr(item.image || "") +
-      '" /></label>' +
+      '" placeholder="https://…" /></label>' +
       '<button type="button" class="btn-sm rm-item" data-ci="' +
       ci +
       '" data-ii="' +
       ii +
+      '"' +
+      (si == null ? "" : ' data-si="' + si + '"') +
       '">✕</button>';
     row.querySelectorAll("input").forEach(function (inp) {
       inp.addEventListener("input", syncItem);
     });
     row.querySelector(".rm-item").addEventListener("click", function () {
-      menuData.categories[ci].items.splice(ii, 1);
+      var el = this;
+      var c = +el.dataset.ci;
+      var i = +el.dataset.ii;
+      var s = el.dataset.si;
+      if (s === undefined || s === "") {
+        menuData.categories[c].items.splice(i, 1);
+      } else {
+        menuData.categories[c].sections[+s].items.splice(i, 1);
+      }
       readStoreForm();
       renderCats();
     });
@@ -120,7 +153,14 @@
     var v = inp.value;
     if (f === "price") v = parseFloat(v) || 0;
     if (f === "image" && !String(v).trim()) v = null;
-    menuData.categories[ci].items[ii][f] = v;
+    var si = inp.dataset.si;
+    if (si === undefined || si === "") {
+      if (menuData.categories[ci].items && menuData.categories[ci].items[ii])
+        menuData.categories[ci].items[ii][f] = v;
+    } else {
+      var sec = menuData.categories[ci].sections[+si];
+      if (sec && sec.items && sec.items[ii]) sec.items[ii][f] = v;
+    }
   }
 
   function syncCat(ev) {
@@ -130,7 +170,23 @@
     var v = inp.value;
     if (f === "id") v = slugify(v);
     if (f === "subtitle") v = v.trim();
+    if (f === "backgroundUrl") {
+      v = v.trim();
+      if (!v) delete menuData.categories[ci].backgroundUrl;
+      else menuData.categories[ci].backgroundUrl = v;
+      return;
+    }
     menuData.categories[ci][f] = v;
+  }
+
+  function syncSectionMeta(ev) {
+    var inp = ev.target;
+    var ci = +inp.dataset.ci;
+    var si = +inp.dataset.si;
+    var f = inp.getAttribute("data-field");
+    var v = inp.value;
+    if (!menuData.categories[ci].sections[si]) return;
+    menuData.categories[ci].sections[si][f] = v.trim();
   }
 
   function renderCats() {
@@ -139,10 +195,14 @@
     (menuData.categories || []).forEach(function (cat, ci) {
       var box = document.createElement("div");
       box.className = "cat-box";
-      box.innerHTML =
-        "<h3>Categoria " +
-        (ci + 1) +
-        '</h3><div class="cat-grid">' +
+
+      var head = document.createElement("h3");
+      head.textContent = "Categoria " + (ci + 1) + " — " + (cat.title || cat.id || "");
+      box.appendChild(head);
+
+      var catGrid = document.createElement("div");
+      catGrid.className = "cat-grid";
+      catGrid.innerHTML =
         '<label>ID <input type="text" data-ci="' +
         ci +
         '" data-field="id" value="' +
@@ -157,8 +217,13 @@
         ci +
         '" data-field="emoji" value="' +
         escapeAttr(cat.emoji) +
-        '" maxlength="4" /></label></div>' +
-        '<div class="cat-sub"><label>Subtítulo <input type="text" data-ci="' +
+        '" maxlength="4" /></label>';
+      box.appendChild(catGrid);
+
+      var subRow = document.createElement("div");
+      subRow.className = "cat-sub";
+      subRow.innerHTML =
+        '<label>Subtítulo <input type="text" data-ci="' +
         ci +
         '" data-field="subtitle" value="' +
         escapeAttr(cat.subtitle || "") +
@@ -168,7 +233,7 @@
         '" data-field="theme">' +
         '<option value="default"' +
         (cat.theme === "default" || !cat.theme ? " selected" : "") +
-        '>Padrão</option>' +
+        '>Padrão (bebidas)</option>' +
         '<option value="burger"' +
         (cat.theme === "burger" ? " selected" : "") +
         '>Hambúrguer</option>' +
@@ -181,61 +246,213 @@
         '<option value="sweet"' +
         (cat.theme === "sweet" ? " selected" : "") +
         '>Doces</option>' +
-        "</select></label></div>" +
-        '<button type="button" class="btn-sm rm-cat" data-ci="' +
-        ci +
-        '">Remover categoria</button>' +
-        '<div class="items-wrap" data-for="' +
-        ci +
-        '"></div>' +
-        '<button type="button" class="btn-sm add-item" data-ci="' +
-        ci +
-        '">+ Item</button>';
+        "</select></label>";
+      box.appendChild(subRow);
 
-      root.appendChild(box);
-      var wrap = box.querySelector(".items-wrap");
-      (cat.items || []).forEach(function (item, ii) {
-        wrap.appendChild(renderItem(ci, ii, item));
-      });
+      var bgRow = document.createElement("label");
+      bgRow.className = "cat-bg-row";
+      bgRow.innerHTML =
+        'Fundo da página (URL da imagem, opcional — sobrepõe o padrão do tema)<input type="text" data-ci="' +
+        ci +
+        '" data-field="backgroundUrl" value="' +
+        escapeAttr(cat.backgroundUrl || "") +
+        '" placeholder="https://… (1920×1080 recomendado)" />';
+      box.appendChild(bgRow);
 
       box
-        .querySelectorAll(".cat-grid input, .cat-sub input, .cat-theme-label select")
+        .querySelectorAll(".cat-grid input, .cat-sub input, .cat-theme-label select, .cat-bg-row input")
         .forEach(function (inp) {
           inp.addEventListener("input", syncCat);
           inp.addEventListener("change", syncCat);
         });
-      box.querySelector(".rm-cat").addEventListener("click", function () {
+
+      var hasSections = cat.sections && Array.isArray(cat.sections) && cat.sections.length > 0;
+
+      if (hasSections) {
+        cat.sections.forEach(function (sec, si) {
+          var secBox = document.createElement("div");
+          secBox.className = "sec-box";
+          secBox.innerHTML =
+            '<div class="sec-head"><strong>Secção ' +
+            (si + 1) +
+            '</strong><button type="button" class="btn-sm rm-sec" data-ci="' +
+            ci +
+            '" data-si="' +
+            si +
+            '">Remover secção</button></div>' +
+            '<div class="sec-grid">' +
+            '<label>Título da secção <input type="text" data-ci="' +
+            ci +
+            '" data-si="' +
+            si +
+            '" data-field="title" value="' +
+            escapeAttr(sec.title || "") +
+            '" /></label>' +
+            '<label>Subtítulo <input type="text" data-ci="' +
+            ci +
+            '" data-si="' +
+            si +
+            '" data-field="subtitle" value="' +
+            escapeAttr(sec.subtitle || "") +
+            '" /></label></div>' +
+            '<div class="items-wrap sec-items" data-for="' +
+            ci +
+            "-" +
+            si +
+            '"></div>' +
+            '<button type="button" class="btn-sm add-item-sec" data-ci="' +
+            ci +
+            '" data-si="' +
+            si +
+            '">+ Item nesta secção</button>';
+
+          box.appendChild(secBox);
+          var wrap = secBox.querySelector(".items-wrap");
+          (sec.items || []).forEach(function (item, ii) {
+            wrap.appendChild(renderItem(ci, ii, item, si));
+          });
+          secBox.querySelectorAll(".sec-grid input").forEach(function (inp) {
+            inp.addEventListener("input", syncSectionMeta);
+          });
+          secBox.querySelector(".rm-sec").addEventListener("click", function () {
+            menuData.categories[ci].sections.splice(si, 1);
+            readStoreForm();
+            renderCats();
+          });
+          secBox.querySelector(".add-item-sec").addEventListener("click", function () {
+            if (!menuData.categories[ci].sections[si].items)
+              menuData.categories[ci].sections[si].items = [];
+            menuData.categories[ci].sections[si].items.push({
+              id: "i-" + Date.now(),
+              name: "Item",
+              description: "",
+              price: 0,
+              image: null,
+            });
+            readStoreForm();
+            renderCats();
+          });
+        });
+
+        var addSecBtn = document.createElement("button");
+        addSecBtn.type = "button";
+        addSecBtn.className = "btn-sm";
+        addSecBtn.textContent = "+ Nova secção";
+        addSecBtn.addEventListener("click", function () {
+          if (!menuData.categories[ci].sections) menuData.categories[ci].sections = [];
+          menuData.categories[ci].sections.push({
+            title: "Nova secção",
+            subtitle: "",
+            items: [],
+          });
+          readStoreForm();
+          renderCats();
+        });
+        box.appendChild(addSecBtn);
+
+        var flatBtn = document.createElement("button");
+        flatBtn.type = "button";
+        flatBtn.className = "btn-sm btn-warn";
+        flatBtn.textContent = "Juntar tudo numa lista simples (sem secções)";
+        flatBtn.addEventListener("click", function () {
+          if (!confirm("Todos os itens passam para uma única lista; títulos de secção perdem-se. Continuar?"))
+            return;
+          var all = [];
+          (menuData.categories[ci].sections || []).forEach(function (sec) {
+            (sec.items || []).forEach(function (it) {
+              all.push(it);
+            });
+          });
+          menuData.categories[ci].items = all;
+          delete menuData.categories[ci].sections;
+          readStoreForm();
+          renderCats();
+        });
+        box.appendChild(flatBtn);
+      } else {
+        var itemsWrap = document.createElement("div");
+        itemsWrap.className = "items-wrap";
+        (cat.items || []).forEach(function (item, ii) {
+          itemsWrap.appendChild(renderItem(ci, ii, item, null));
+        });
+        box.appendChild(itemsWrap);
+
+        var rowBtns = document.createElement("div");
+        rowBtns.className = "cat-actions";
+        rowBtns.innerHTML =
+          '<button type="button" class="btn-sm add-item-flat" data-ci="' +
+          ci +
+          '">+ Item</button>' +
+          '<button type="button" class="btn-sm" data-ci="' +
+          ci +
+          '" data-act="sections">Organizar em secções</button>';
+        box.appendChild(rowBtns);
+
+        rowBtns.querySelector(".add-item-flat").addEventListener("click", function () {
+          if (!menuData.categories[ci].items) menuData.categories[ci].items = [];
+          menuData.categories[ci].items.push({
+            id: "i-" + Date.now(),
+            name: "Item",
+            description: "",
+            price: 0,
+            image: null,
+          });
+          readStoreForm();
+          renderCats();
+        });
+        rowBtns.querySelector('[data-act="sections"]').addEventListener("click", function () {
+          var old = menuData.categories[ci].items || [];
+          menuData.categories[ci].sections = [
+            {
+              title: "Geral",
+              subtitle: "",
+              items: old.slice(),
+            },
+          ];
+          delete menuData.categories[ci].items;
+          readStoreForm();
+          renderCats();
+        });
+      }
+
+      var rmCat = document.createElement("button");
+      rmCat.type = "button";
+      rmCat.className = "btn-sm rm-cat";
+      rmCat.dataset.ci = ci;
+      rmCat.textContent = "Remover categoria";
+      rmCat.addEventListener("click", function () {
         menuData.categories.splice(ci, 1);
         readStoreForm();
         renderCats();
       });
-      box.querySelector(".add-item").addEventListener("click", function () {
-        if (!menuData.categories[ci].items) menuData.categories[ci].items = [];
-        menuData.categories[ci].items.push({
-          id: "i-" + Date.now(),
-          name: "Item",
-          description: "",
-          price: 0,
-          image: null,
-        });
-        readStoreForm();
-        renderCats();
-      });
+      box.appendChild(rmCat);
+
+      root.appendChild(box);
     });
   }
 
   function syncAll() {
     readStoreForm();
     document
-      .querySelectorAll(".cat-grid input, .cat-sub input, .cat-theme-label select")
+      .querySelectorAll(".cat-grid input, .cat-sub input, .cat-theme-label select, .cat-bg-row input")
       .forEach(function (inp) {
         var ci = +inp.dataset.ci;
         var f = inp.getAttribute("data-field");
         var v = inp.value;
         if (f === "id") v = slugify(v);
-        if (f === "subtitle") v = v.trim();
-        menuData.categories[ci][f] = v;
+        if (f === "subtitle" || f === "backgroundUrl") v = v.trim();
+        if (menuData.categories[ci]) {
+          if (f === "backgroundUrl" && !v) delete menuData.categories[ci].backgroundUrl;
+          else menuData.categories[ci][f] = v;
+        }
       });
+    document.querySelectorAll(".sec-grid input").forEach(function (inp) {
+      var ci = +inp.dataset.ci;
+      var si = +inp.dataset.si;
+      var f = inp.getAttribute("data-field");
+      if (menuData.categories[ci] && menuData.categories[ci].sections[si])
+        menuData.categories[ci].sections[si][f] = inp.value.trim();
+    });
     document.querySelectorAll(".item-grid input").forEach(function (inp) {
       var ci = +inp.dataset.ci;
       var ii = +inp.dataset.ii;
@@ -243,8 +460,18 @@
       var v = inp.value;
       if (f === "price") v = parseFloat(v) || 0;
       if (f === "image" && !String(v).trim()) v = null;
-      if (menuData.categories[ci].items[ii])
-        menuData.categories[ci].items[ii][f] = v;
+      var si = inp.dataset.si;
+      if (si === undefined || si === "") {
+        if (
+          menuData.categories[ci] &&
+          menuData.categories[ci].items &&
+          menuData.categories[ci].items[ii]
+        )
+          menuData.categories[ci].items[ii][f] = v;
+      } else {
+        var sec = menuData.categories[ci].sections[+si];
+        if (sec && sec.items && sec.items[ii]) sec.items[ii][f] = v;
+      }
     });
   }
 
@@ -270,8 +497,13 @@
         showPanel();
         if (!storeBound) {
           storeBound = true;
-          ["f-name", "f-wa", "f-headline", "f-subhead", "f-address"].forEach(function (id) {
-            $(id).addEventListener("input", readStoreForm);
+          ["f-name", "f-wa", "f-headline", "f-subhead", "f-address", "f-logo-image"].forEach(function (id) {
+            var el = $(id);
+            if (el) el.addEventListener("input", readStoreForm);
+          });
+          $("f-logo-mode").addEventListener("change", function () {
+            toggleLogoFields();
+            readStoreForm();
           });
         }
       })

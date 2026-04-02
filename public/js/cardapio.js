@@ -34,6 +34,20 @@ function applyCategoryTheme(theme) {
   body.classList.add("cardapio-theme-" + t);
 }
 
+function clearCategoryBackground() {
+  document.body.style.removeProperty("--cardapio-bg-photo");
+}
+
+/** Fundo opcional por categoria (`backgroundUrl` no JSON). */
+function applyCategoryBackground(cat) {
+  const url = (cat && cat.backgroundUrl && String(cat.backgroundUrl).trim()) || "";
+  if (url) {
+    document.body.style.setProperty("--cardapio-bg-photo", `url(${JSON.stringify(url)})`);
+  } else {
+    clearCategoryBackground();
+  }
+}
+
 function toast(msg) {
   let t = document.getElementById("cart-toast");
   if (!t) {
@@ -58,7 +72,7 @@ function escapeHtml(s) {
 /** Fotos demonstração (Unsplash) — substitua por URLs próprias no JSON se quiser. */
 const U = "https://images.unsplash.com";
 const DEMO_IMG = {
-  burger: `${U}/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&h=400&q=82`,
+  burger: `${U}/photo-1568901346375-23c945677c61?auto=format&fit=crop&w=400&h=400&q=82`,
   burger2: `${U}/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&h=400&q=82`,
   bacon: `${U}/photo-1553979459-b859fc4b6b29?auto=format&fit=crop&w=400&h=400&q=82`,
   salad: `${U}/photo-1526318896980-cf78c088247c?auto=format&fit=crop&w=400&h=400&q=82`,
@@ -160,6 +174,7 @@ function buildItemCard(item, catId, catTitle, sectionTitle, categoryTheme) {
 
 function renderCategoryPicker(root, categories, storeName) {
   applyCategoryTheme("default");
+  clearCategoryBackground();
   document.title = `Cardápio — ${storeName || "Cardápio"}`;
   const titleEl = document.getElementById("cat-title");
   if (titleEl) titleEl.textContent = "Escolha uma categoria";
@@ -210,11 +225,13 @@ async function renderCardapio() {
     const cat = categories.find((c) => c.id === catId);
     if (!cat) {
       applyCategoryTheme("default");
+      clearCategoryBackground();
       root.className = "items-list";
       root.innerHTML = `<p class="error-msg">Categoria não encontrada.</p>`;
       return;
     }
     applyCategoryTheme(cat.theme);
+    applyCategoryBackground(cat);
     document.title = `${cat.title} — ${store.name || "Cardápio"}`;
     const titleNode = document.getElementById("cat-title");
     if (titleNode) titleNode.textContent = cat.title;
@@ -262,6 +279,7 @@ async function renderCardapio() {
     }
   } catch (e) {
     applyCategoryTheme("default");
+    clearCategoryBackground();
     root.className = "items-list";
     root.innerHTML = `<p class="error-msg">Erro ao carregar itens.</p>`;
     console.error(e);
