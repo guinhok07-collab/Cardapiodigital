@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Cardápio Digital</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div id="login-section" class="card">
+    <h1>Cardápio Digital — Admin</h1>
+    <p class="muted">Senha para editar o cardápio.</p>
+    <form id="login-form" class="stack">
+      <label>Senha <input type="password" id="login-password" required /></label>
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="login-error" class="err hidden"></p>
+    <p><a href="../index.html">← Voltar ao site</a></p>
+  </div>
+
+  <div id="panel-section" class="hidden">
+    <header class="admin-head">
+      <h1>Painel</h1>
+      <button type="button" id="btn-logout">Sair</button>
+    </header>
+
+    <section class="block">
+      <h2>Loja</h2>
+      <div class="grid2">
+        <label>Nome <input type="text" id="f-name" /></label>
+        <label>WhatsApp (55…) <input type="text" id="f-wa" /></label>
+        <label class="full">Título <input type="text" id="f-headline" /></label>
+        <label class="full">Subtítulo <input type="text" id="f-subhead" /></label>
+        <label class="full">Endereço (rodapé) <input type="text" id="f-address" /></label>
+        <label class="full">Imagem rodapé (URL ou images/…) <input type="text" id="f-hero" /></label>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="row">
+        <h2>Categorias</h2>
+        <button type="button" id="btn-add-cat" class="btn-sm">+ Categoria</button>
+      </div>
+      <div id="cats-editor"></div>
+    </section>
+
+    <section class="block">
+      <h2>Publicar</h2>
+      <p class="muted small">Baixe o JSON e substitua <code>public/data/menu-data.json</code> no projeto.</p>
+      <button type="button" id="btn-download" class="btn-pri">Baixar menu-data.json</button>
+      <button type="button" id="btn-preview" class="btn-sec">Pré-visualizar (este navegador)</button>
+      <p id="preview-msg" class="ok hidden">Pré-visualização ativa.</p>
+    </section>
+    <p class="foot"><a href="../index.html">Ver site</a></p>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

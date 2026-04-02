@@ -1,0 +1,10 @@
+{
+  "name": "cardapio-digital",
+  "private": true,
+  "scripts": {
+    "start": "serve public -l 3456"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

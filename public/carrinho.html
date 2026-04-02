@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrinho — Cardápio Digital</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="page-carrinho">
+  <header class="bar-top">
+    <div class="bar-row-actions">
+      <a class="back-link" href="index.html">← Cardápio</a>
+    </div>
+    <h1 class="page-title">Carrinho</h1>
+  </header>
+
+  <main class="main narrow">
+    <div id="empty-cart" class="empty-cart hidden">
+      <p>Carrinho vazio.</p>
+      <a class="btn-link" href="index.html">Ver cardápio</a>
+    </div>
+
+    <div id="cart-content" class="hidden">
+      <div id="cart-lines"></div>
+      <section class="checkout-card">
+        <h2>Finalizar pedido</h2>
+        <form id="checkout-form">
+          <label>Nome *<input type="text" name="name" required autocomplete="name" /></label>
+          <label>WhatsApp *<input type="tel" name="phone" required autocomplete="tel" /></label>
+          <label>Endereço *<textarea name="address" required rows="3"></textarea></label>
+          <fieldset class="pay-fieldset">
+            <legend>Pagamento *</legend>
+            <label><input type="radio" name="payment" value="PIX" required /> PIX</label>
+            <label><input type="radio" name="payment" value="Cartão na entrega" /> Cartão na entrega</label>
+            <label><input type="radio" name="payment" value="Dinheiro" /> Dinheiro</label>
+          </fieldset>
+          <label>Observações<textarea name="notes" rows="2"></textarea></label>
+          <p class="total-row">Total: <strong id="cart-total">R$ 0,00</strong></p>
+          <button type="submit" class="btn-wa-send">Enviar pedido no WhatsApp</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/carrinho.js" type="module"></script>
+</body>
+</html>

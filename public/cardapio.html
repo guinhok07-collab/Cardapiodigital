@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cardápio</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="page-cardapio">
+  <header class="bar-top">
+    <div class="bar-row-actions">
+      <a class="back-link" href="index.html">← Voltar</a>
+      <a class="cart-link" href="carrinho.html">🛒 <span id="cart-badge" class="cart-badge is-empty">0</span></a>
+    </div>
+    <div class="bar-title">
+      <span id="cat-emoji" class="cat-emoji"></span>
+      <h1 id="cat-title" class="cat-title">Categoria</h1>
+    </div>
+    <p id="cat-subtitle" class="cat-subtitle" hidden></p>
+  </header>
+
+  <a class="cart-fab" href="carrinho.html" data-cart-fab hidden>
+    🛒 Carrinho <strong data-cart-fab-count>0</strong>
+  </a>
+
+  <main class="main narrow">
+    <div id="items-root" class="items-list"></div>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footnote">Cardápio Digital</p>
+  </footer>
+
+  <script src="js/cardapio.js" type="module"></script>
+</body>
+</html>

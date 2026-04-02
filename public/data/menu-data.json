@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "store": {
+    "name": "Cardápio Digital",
+    "headline": "Monte seu pedido",
+    "subhead": "Escolha a categoria, adicione itens ao carrinho e finalize no WhatsApp.",
+    "whatsapp": "5511999999999",
+    "address": "",
+    "heroImage": null
+  },
+  "categories": [
+    {
+      "id": "exemplo",
+      "title": "Pratos principais",
+      "subtitle": "Exemplo — edite no admin ou no JSON",
+      "emoji": "🍽️",
+      "items": [
+        {
+          "id": "ex-1",
+          "name": "Prato exemplo",
+          "description": "Descrição e ingredientes.",
+          "price": 29.9,
+          "image": null
+        },
+        {
+          "id": "ex-2",
+          "name": "Bebida exemplo",
+          "description": "350 ml",
+          "price": 6,
+          "image": null
+        }
+      ]
+    }
+  ]
+}
