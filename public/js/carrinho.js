@@ -11,6 +11,7 @@ import {
   openWhatsappOrder,
   generateOrderNumber,
 } from "./cart.js";
+import { addPurchase } from "./finance-stats.js";
 
 function escapeHtml(s) {
   const d = document.createElement("div");
@@ -237,6 +238,14 @@ if (checkoutForm) {
     }
 
     const orderNumber = generateOrderNumber();
+
+    // Financeiro básico (local): contabiliza compra antes de limpar carrinho.
+    const subtotal = lines.reduce(
+      (s, L) => s + (Number(L.price) || 0) * (L.qty || 0),
+      0
+    );
+    addPurchase(subtotal);
+
     openWhatsappOrder({
       whatsappDigits: store.whatsapp || "5511999999999",
       text: buildWhatsappText({

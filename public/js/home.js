@@ -1,6 +1,7 @@
 import { loadMenuData } from "./data-loader.js";
 import { initCartBadge } from "./cart-badge.js";
 import { DEFAULT_HOME_HERO, homeHeroOverlayGradient } from "./theme-assets.js";
+import { incVisits } from "./finance-stats.js";
 
 const WELCOME_SESSION_KEY = "cardapio_welcome_seen_v1";
 
@@ -215,6 +216,7 @@ async function init() {
     renderHome(data);
     updateOpenClosedBanner(data.store || {});
     setInterval(() => updateOpenClosedBanner(data.store || {}), 30000);
+    incVisits(1);
   } catch (e) {
     document.getElementById("category-grid").innerHTML =
       `<p class="error-msg">Erro ao carregar o cardápio.</p>`;

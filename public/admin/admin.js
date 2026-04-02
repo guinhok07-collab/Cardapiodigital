@@ -60,6 +60,68 @@
     $("panel-section").classList.remove("hidden");
   }
 
+  var FIN_STATS_KEY = "cardapio_fin_stats_v1";
+
+  function todayKey(d) {
+    d = d || new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var day = String(d.getDate()).padStart(2, "0");
+    return y + "-" + m + "-" + day;
+  }
+
+  function readFinStats() {
+    try {
+      var raw = localStorage.getItem(FIN_STATS_KEY);
+      if (!raw) return {};
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return {};
+      return parsed;
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function fmtMoneyBRL(n) {
+    try {
+      var v = Number(n) || 0;
+      return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    } catch (e) {
+      return "R$ " + (Number(n) || 0).toFixed(2);
+    }
+  }
+
+  function renderFinanceStats() {
+    var stats = readFinStats();
+    var k = todayKey();
+    var row = stats[k] || { visits: 0, purchases: 0, revenue: 0 };
+    var visitsEl = $("fin-visits-today");
+    var purchasesEl = $("fin-purchases-today");
+    var revenueEl = $("fin-revenue-today");
+    var lastUpdateEl = $("fin-last-update");
+    if (visitsEl) visitsEl.textContent = row.visits ?? 0;
+    if (purchasesEl) purchasesEl.textContent = row.purchases ?? 0;
+    if (revenueEl) revenueEl.textContent = fmtMoneyBRL(row.revenue ?? 0);
+
+    var dt = "";
+    try {
+      // Se existir, mostra quando houve a última gravação (approach simples).
+      dt = new Date().toLocaleString("pt-BR");
+    } catch (e) {}
+    if (lastUpdateEl) lastUpdateEl.textContent = dt;
+
+    var clearBtn = $("btn-fin-clear");
+    if (clearBtn && !clearBtn._bound) {
+      clearBtn._bound = true;
+      clearBtn.addEventListener("click", function () {
+        try {
+          localStorage.removeItem(FIN_STATS_KEY);
+        } catch (e) {}
+        renderFinanceStats();
+      });
+    }
+  }
+
   function loadData() {
     return fetch("../data/menu-data.json", { cache: "no-store" }).then(function (r) {
       if (!r.ok) throw new Error("JSON");
@@ -657,6 +719,7 @@
         fillStoreForm();
         renderCats();
         showPanel();
+        renderFinanceStats();
         if (!storeBound) {
           storeBound = true;
           [
