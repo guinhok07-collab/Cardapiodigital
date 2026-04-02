@@ -443,10 +443,6 @@ body.page-home {
   color: #e5e7eb;
 }
 
-.page-home .admin-link a {
-  color: #78716c;
-}
-
 .footer-address {
   font-weight: 600;
   color: var(--text);
@@ -454,10 +450,6 @@ body.page-home {
 
 .footer-address.hidden {
   display: none;
-}
-
-.admin-link a {
-  color: var(--muted);
 }
 
 /* Cardápio categoria */
