@@ -21,9 +21,19 @@ function applyHomeHeroImage(store) {
   if (!el) return;
   const url = (store.homeHeroImage || "").trim();
   if (url) {
-    el.style.backgroundImage = `url(${JSON.stringify(url)})`;
+    const u = JSON.stringify(url);
+    el.style.backgroundImage = [
+      "linear-gradient(180deg, rgba(0,0,0,.52) 0%, rgba(0,0,0,.28) 42%, rgba(0,0,0,.62) 100%)",
+      `url(${u})`,
+    ].join(", ");
+    el.style.backgroundSize = "auto, contain";
+    el.style.backgroundRepeat = "no-repeat, no-repeat";
+    el.style.backgroundPosition = "center, center center";
   } else {
     el.style.backgroundImage = "";
+    el.style.backgroundSize = "";
+    el.style.backgroundRepeat = "";
+    el.style.backgroundPosition = "";
   }
 }
 
@@ -31,11 +41,19 @@ function renderHome(data) {
   const store = data.store || {};
   document.getElementById("store-name").textContent =
     store.name || "Cardápio Digital";
-  document.getElementById("headline").textContent =
-    store.headline || "Monte seu pedido";
-  document.getElementById("subhead").textContent =
-    store.subhead ||
-    "Escolha uma categoria e monte o pedido.";
+
+  const tagline = (store.headline || "").trim();
+  const tagEl = document.getElementById("headline");
+  if (tagEl) {
+    tagEl.textContent = tagline || "Toque numa categoria para ver os itens";
+  }
+
+  const subEl = document.getElementById("subhead");
+  const sub = (store.subhead || "").trim();
+  if (subEl) {
+    subEl.textContent = sub;
+    subEl.classList.toggle("hidden", !sub);
+  }
 
   applyHomeHeroImage(store);
 
@@ -79,7 +97,7 @@ function renderHome(data) {
     categories.forEach((cat) => {
       const a = document.createElement("a");
       const th = themeClass(cat);
-      a.className = "home-cat-pill home-cat-pill--" + th;
+      a.className = "home-cat-pill home-cat-pill--flyer home-cat-pill--" + th;
       a.href = `cardapio.html#cat=${encodeURIComponent(cat.id)}`;
       a.innerHTML = `<span class="home-cat-pill-emoji" aria-hidden="true">${escapeHtml(cat.emoji || "📋")}</span><span class="home-cat-pill-txt">${escapeHtml(cat.title || "Categoria")}</span>`;
       strip.appendChild(a);
@@ -89,20 +107,24 @@ function renderHome(data) {
 
   const grid = document.getElementById("category-grid");
   grid.innerHTML = "";
-  categories.forEach((cat) => {
+  categories.forEach((cat, idx) => {
     const th = themeClass(cat);
     const a = document.createElement("a");
-    a.className =
-      "category-card category-card--compact category-card--" + th;
+    a.className = "flyer-cat flyer-cat--" + th;
+    if (categories.length % 2 === 1 && idx === categories.length - 1) {
+      a.classList.add("flyer-cat--full");
+    }
     a.href = `cardapio.html#cat=${encodeURIComponent(cat.id)}`;
     const sub = (cat.subtitle || "").trim();
     a.innerHTML = `
-      <span class="category-emoji" aria-hidden="true">${escapeHtml(cat.emoji || "📋")}</span>
-      <div class="category-text">
-        <h3 class="category-title">${escapeHtml(cat.title || "Categoria")}</h3>
-        ${sub ? `<span class="category-sub">${escapeHtml(sub)}</span>` : ""}
+      <span class="flyer-cat-emoji" aria-hidden="true">${escapeHtml(cat.emoji || "•")}</span>
+      <div class="flyer-cat-body">
+        <div class="flyer-cat-row1">
+          <span class="flyer-cat-name">${escapeHtml(cat.title || "Categoria")}</span>
+          <span class="flyer-cat-go">›</span>
+        </div>
+        ${sub ? `<p class="flyer-cat-desc">${escapeHtml(sub)}</p>` : ""}
       </div>
-      <span class="category-cta" aria-hidden="true">›</span>
     `;
     grid.appendChild(a);
   });

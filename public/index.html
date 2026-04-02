@@ -4,50 +4,53 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cardápio Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="page-home">
-  <header class="home-top-bar">
+<body class="page-home page-home--flyer">
+  <header class="home-top-bar home-top-bar--flyer">
     <div class="home-top-inner">
       <div class="top-bar-row1">
         <a href="index.html" class="top-bar-brand-link" id="top-brand-link">
           <img id="top-brand-logo" class="top-brand-logo hidden" alt="" width="140" height="42" decoding="async" />
           <span id="top-brand" class="top-bar-brand">Cardápio</span>
         </a>
-        <a class="cart-link" href="carrinho.html">
+        <a class="cart-link cart-link--flyer" href="carrinho.html">
           <span aria-hidden="true">🛒</span> Carrinho
           <span class="cart-badge is-empty" id="cart-badge">0</span>
         </a>
       </div>
-      <nav class="home-quick-nav" aria-label="Menu principal">
+      <nav class="home-quick-nav home-quick-nav--flyer" aria-label="Menu principal">
         <a href="index.html">Início</a>
         <a href="carrinho.html">Carrinho</a>
       </nav>
-      <nav class="home-cat-strip" id="home-cat-strip" aria-label="Categorias do cardápio"></nav>
+      <nav class="home-cat-strip home-cat-strip--flyer" id="home-cat-strip" aria-label="Categorias do cardápio"></nav>
     </div>
   </header>
 
-  <section class="home-hero-stage" id="cardapio">
-    <div class="home-hero-bg" id="home-hero-bg" aria-hidden="true"></div>
-    <div class="home-hero-panel">
-      <div class="home-hero-text">
-        <h1 id="store-name" class="store-name">Cardápio Digital</h1>
-        <p id="headline" class="headline">Monte seu pedido</p>
-        <p id="subhead" class="subhead"></p>
-      </div>
-      <div class="home-categories-wrap">
-        <h2 class="home-cat-heading">Categorias</h2>
-        <p class="home-cat-lead">Toque para ver itens e preços.</p>
-        <div id="category-grid" class="category-grid category-grid--compact"></div>
+  <section class="home-hero-stage home-menu-stage" id="cardapio">
+    <div class="home-hero-bg home-menu-bg" id="home-hero-bg" aria-hidden="true"></div>
+    <div class="home-hero-panel home-menu-panel">
+      <header class="home-menu-header">
+        <p class="home-menu-kicker">CARDÁPIO</p>
+        <h1 id="store-name" class="home-store-name">Cardápio Digital</h1>
+        <p id="headline" class="home-menu-tagline"></p>
+        <p id="subhead" class="home-menu-sub hidden"></p>
+      </header>
+
+      <div class="home-menu-board">
+        <div id="category-grid" class="category-grid category-grid--flyer"></div>
       </div>
     </div>
   </section>
 
-  <a class="cart-fab" href="carrinho.html" data-cart-fab hidden>
+  <a class="cart-fab cart-fab--flyer" href="carrinho.html" data-cart-fab hidden>
     <span aria-hidden="true">🛒</span> Carrinho <strong data-cart-fab-count>0</strong>
   </a>
 
-  <footer class="site-footer">
+  <footer class="site-footer site-footer--flyer">
     <p id="footer-address" class="footer-address hidden"></p>
     <p class="footnote">Cardápio Digital</p>
   </footer>
