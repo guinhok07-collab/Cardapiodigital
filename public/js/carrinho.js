@@ -253,7 +253,15 @@ if (checkoutForm) {
     });
     clearCart();
     render();
+    showOrderThanks();
   });
+}
+
+function showOrderThanks() {
+  const el = document.getElementById("order-thanks");
+  if (!el) return;
+  el.classList.remove("hidden");
+  document.body.classList.add("order-thanks-open");
 }
 
 loadMenuData()
