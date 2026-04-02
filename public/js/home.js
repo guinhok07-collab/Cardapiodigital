@@ -7,15 +7,6 @@ function escapeHtml(s) {
   return d.innerHTML;
 }
 
-function themeClass(cat) {
-  const t = cat.theme;
-  if (t === "pastel") return "pastel";
-  if (t === "burger") return "burger";
-  if (t === "pizza") return "pizza";
-  if (t === "sweet") return "sweet";
-  return "default";
-}
-
 function applyHomeHeroImage(store) {
   const el = document.getElementById("home-hero-bg");
   if (!el) return;
@@ -23,10 +14,10 @@ function applyHomeHeroImage(store) {
   if (url) {
     const u = JSON.stringify(url);
     el.style.backgroundImage = [
-      "linear-gradient(180deg, rgba(0,0,0,.52) 0%, rgba(0,0,0,.28) 42%, rgba(0,0,0,.62) 100%)",
+      "linear-gradient(180deg, rgba(15,23,42,.88) 0%, rgba(15,23,42,.75) 50%, rgba(2,6,23,.92) 100%)",
       `url(${u})`,
     ].join(", ");
-    el.style.backgroundSize = "auto, contain";
+    el.style.backgroundSize = "auto, cover";
     el.style.backgroundRepeat = "no-repeat, no-repeat";
     el.style.backgroundPosition = "center, center center";
   } else {
@@ -45,7 +36,7 @@ function renderHome(data) {
   const tagline = (store.headline || "").trim();
   const tagEl = document.getElementById("headline");
   if (tagEl) {
-    tagEl.textContent = tagline || "Toque numa categoria para ver os itens";
+    tagEl.textContent = tagline || "Escolha uma categoria abaixo";
   }
 
   const subEl = document.getElementById("subhead");
@@ -90,41 +81,20 @@ function renderHome(data) {
   }
 
   const categories = data.categories || [];
-
-  const strip = document.getElementById("home-cat-strip");
-  if (strip) {
-    strip.innerHTML = "";
-    categories.forEach((cat) => {
-      const a = document.createElement("a");
-      const th = themeClass(cat);
-      a.className = "home-cat-pill home-cat-pill--flyer home-cat-pill--" + th;
-      a.href = `cardapio.html#cat=${encodeURIComponent(cat.id)}`;
-      a.innerHTML = `<span class="home-cat-pill-emoji" aria-hidden="true">${escapeHtml(cat.emoji || "📋")}</span><span class="home-cat-pill-txt">${escapeHtml(cat.title || "Categoria")}</span>`;
-      strip.appendChild(a);
-    });
-    strip.classList.toggle("hidden", categories.length === 0);
-  }
-
   const grid = document.getElementById("category-grid");
   grid.innerHTML = "";
-  categories.forEach((cat, idx) => {
-    const th = themeClass(cat);
+  categories.forEach((cat) => {
     const a = document.createElement("a");
-    a.className = "flyer-cat flyer-cat--" + th;
-    if (categories.length % 2 === 1 && idx === categories.length - 1) {
-      a.classList.add("flyer-cat--full");
-    }
+    a.className = "home-cat-card";
     a.href = `cardapio.html#cat=${encodeURIComponent(cat.id)}`;
     const sub = (cat.subtitle || "").trim();
     a.innerHTML = `
-      <span class="flyer-cat-emoji" aria-hidden="true">${escapeHtml(cat.emoji || "•")}</span>
-      <div class="flyer-cat-body">
-        <div class="flyer-cat-row1">
-          <span class="flyer-cat-name">${escapeHtml(cat.title || "Categoria")}</span>
-          <span class="flyer-cat-go">›</span>
-        </div>
-        ${sub ? `<p class="flyer-cat-desc">${escapeHtml(sub)}</p>` : ""}
+      <span class="home-cat-emoji" aria-hidden="true">${escapeHtml(cat.emoji || "📋")}</span>
+      <div class="home-cat-text">
+        <span class="home-cat-name">${escapeHtml(cat.title || "Categoria")}</span>
+        ${sub ? `<span class="home-cat-desc">${escapeHtml(sub)}</span>` : ""}
       </div>
+      <span class="home-cat-arrow" aria-hidden="true">→</span>
     `;
     grid.appendChild(a);
   });
@@ -136,8 +106,6 @@ async function init() {
     const data = await loadMenuData();
     renderHome(data);
   } catch (e) {
-    const strip = document.getElementById("home-cat-strip");
-    if (strip) strip.innerHTML = "";
     document.getElementById("category-grid").innerHTML =
       `<p class="error-msg">Erro ao carregar o cardápio.</p>`;
     console.error(e);
