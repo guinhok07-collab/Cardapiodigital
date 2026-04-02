@@ -4,7 +4,7 @@
     "headline": "Cardápio completo — delivery",
     "subhead": "Escolha Hambúrgueres, Pastelaria, Pizza, Doces ou Bebidas. Todos os itens com descrição.",
     "whatsapp": "5511983928497",
-    "address": "Av. Domingos Batista de Lima, 598 — delivery (11) 98392-8497",
+    "address": "Av. Domingos Batista de Lima, 598 — Jd. Guanabara",
     "homeHeroImage": "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1920&q=85",
     "pixKey": "",
     "pixHolderName": "",
@@ -20,6 +20,8 @@
       "subtitle": "Cardápio clássico — tradicionais, gourmet, acompanhamentos e adicionais.",
       "theme": "burger",
       "menuLayout": "poster-burger",
+      "posterHeadline": "BURGERS",
+      "posterPhotoTheme": "burger",
       "sections": [
         {
           "title": "Tradicionais",
@@ -78,6 +80,8 @@
       "subtitle": "Combos com batata e refrigerante — individual, casal ou para grupos.",
       "theme": "burger",
       "menuLayout": "combo-wood",
+      "posterHeadline": "COMBOS",
+      "posterPhotoTheme": "combo",
       "sections": [
         {
           "title": "Combo individual",
@@ -232,6 +236,8 @@
       "subtitle": "Pastéis salgados, especiais e porções — tudo organizado abaixo.",
       "theme": "pastel",
       "menuLayout": "poster-pastel",
+      "posterHeadline": "PASTEL",
+      "posterPhotoTheme": "pastel",
       "sections": [
         {
           "title": "Pastéis clássicos",
@@ -427,6 +433,9 @@
       "emoji": "🍕",
       "subtitle": "Massa média — sabores com ingredientes descritos. Confirme borda recheada no pedido.",
       "theme": "pizza",
+      "menuLayout": "poster-burger",
+      "posterHeadline": "PIZZA",
+      "posterPhotoTheme": "pizza",
       "sections": [
         {
           "title": "Clássicas",
@@ -514,6 +523,9 @@
       "emoji": "🍫",
       "subtitle": "Pastéis e sobremesas doces.",
       "theme": "sweet",
+      "menuLayout": "poster-burger",
+      "posterHeadline": "DOCES",
+      "posterPhotoTheme": "sweet",
       "sections": [
         {
           "title": "Pastéis doces",
@@ -583,6 +595,9 @@
       "emoji": "🥤",
       "subtitle": "Refrigerantes, sucos, água e chás gelados.",
       "theme": "default",
+      "menuLayout": "poster-burger",
+      "posterHeadline": "BEBIDAS",
+      "posterPhotoTheme": "drinks",
       "sections": [
         {
           "title": "Refrigerantes e água",

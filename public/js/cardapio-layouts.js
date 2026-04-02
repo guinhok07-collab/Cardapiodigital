@@ -1,10 +1,18 @@
-import { addItem, formatMoney } from "./cart.js";
+import { addItem } from "./cart.js";
 
 function escapeHtml(s) {
   const d = document.createElement("div");
   d.textContent = s == null ? "" : String(s);
   return d.innerHTML;
 }
+
+/** Layouts que usam o poster preto + laranja (mesmo visual do menu burgers). */
+const POSTER_LAYOUT_KEYS = new Set([
+  "poster-burger",
+  "poster-menu",
+  "combo-wood",
+  "poster-pastel",
+]);
 
 export function setBodyLayoutClass(layout) {
   const main = document.getElementById("cardapio-main");
@@ -13,25 +21,10 @@ export function setBodyLayoutClass(layout) {
     main?.classList.remove(c);
   });
   if (!layout || layout === "default") return;
-  const map = {
-    "poster-burger": "layout-poster-burger",
-    "poster-pastel": "layout-poster-pastel",
-    "combo-wood": "layout-combo-wood",
-  };
-  const cls = map[layout];
-  if (cls) {
-    document.body.classList.add(cls);
-    main?.classList.add(cls);
+  if (POSTER_LAYOUT_KEYS.has(layout)) {
+    document.body.classList.add("layout-poster-burger");
+    main?.classList.add("layout-poster-burger");
   }
-}
-
-
-function formatPhoneDisplay(waDigits) {
-  const d = String(waDigits || "").replace(/\D/g, "");
-  if (d.length >= 12 && d.startsWith("55"))
-    return `(${d.slice(2, 4)}) ${d.slice(4, 9)}-${d.slice(9)}`;
-  if (d.length >= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
-  return d || "";
 }
 
 function bindAdd(btn, item, catId, catTitle, sectionTitle, onToast) {
@@ -46,148 +39,100 @@ function bindAdd(btn, item, catId, catTitle, sectionTitle, onToast) {
   });
 }
 
-/** Combos — fundo madeira, grade 2×2, faixas laranja */
-export function renderComboWood(root, cat, catId, catTitle, store, onToast) {
-  root.className = "combo-wood-root";
-  root.innerHTML = "";
+const U = "https://images.unsplash.com";
 
-  const wrap = document.createElement("div");
-  wrap.className = "combo-wood";
+/** Duas fotos circulares por tema — imagens meramente ilustrativas (aviso no HTML). */
+const POSTER_PHOTO_PAIRS = {
+  burger: [
+    {
+      src: `${U}/photo-1568901346375-23c945677c61?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Hambúrguer artesanal com queijo derretido",
+    },
+    {
+      src: `${U}/photo-1550547660-d9450f859349?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Hambúrguer no pão com gergelim",
+    },
+  ],
+  combo: [
+    {
+      src: `${U}/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Combo de lanche com batata e refrigerante",
+    },
+    {
+      src: `${U}/photo-1555992336-cbf0c433c5cf?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Hambúrguer com batata frita",
+    },
+  ],
+  pastel: [
+    {
+      src: `${U}/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Pastéis fritos crocantes",
+    },
+    {
+      src: `${U}/photo-1625937282814-1d77c75f9f2e?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Pastel e salgados",
+    },
+  ],
+  pizza: [
+    {
+      src: `${U}/photo-1513104890138-7c7496599c91?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Pizza com queijo e calabresa",
+    },
+    {
+      src: `${U}/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Pizza fatia com ingredientes",
+    },
+  ],
+  sweet: [
+    {
+      src: `${U}/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Sobremesa doce",
+    },
+    {
+      src: `${U}/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Chocolate e doces",
+    },
+  ],
+  drinks: [
+    {
+      src: `${U}/photo-1544145945-f0a224ac7a5e?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Refrigerantes e bebidas geladas",
+    },
+    {
+      src: `${U}/photo-1621506289937-577413a31a3d?auto=format&fit=crop&w=720&h=720&q=88`,
+      alt: "Suco e copos com gelo",
+    },
+  ],
+};
 
-  const head = document.createElement("header");
-  head.className = "combo-wood-head";
-  head.innerHTML = `
-    <div class="combo-wood-head-text">
-      <h2 class="combo-wood-combos">COMBOS</h2>
-      <p class="combo-wood-sub"><span class="combo-wood-de">de</span> Lanches</p>
-    </div>
-    <div class="combo-wood-head-photo" role="img" aria-label="Lanche e refrigerante"></div>
-  `;
-
-  const grid = document.createElement("div");
-  grid.className = "combo-wood-grid";
-
-  (cat.sections || []).forEach((sec) => {
-    const st = (sec.title || "").trim();
-    const sub = (sec.subtitle || "").trim();
-    const box = document.createElement("section");
-    box.className = "combo-wood-panel";
-    box.innerHTML = `
-      <div class="combo-wood-panel-bar">
-        <span class="combo-wood-panel-title">${escapeHtml(st)}</span>
-        ${sub ? `<span class="combo-wood-panel-sub">${escapeHtml(sub)}</span>` : ""}
-      </div>
-      <div class="combo-wood-panel-body"></div>
-    `;
-    const body = box.querySelector(".combo-wood-panel-body");
-    (sec.items || []).forEach((item) => {
-      const row = document.createElement("div");
-      row.className = "combo-wood-item";
-      row.innerHTML = `
-        <div class="combo-wood-item-top">
-          <span class="combo-wood-item-name">${escapeHtml(item.name)}</span>
-          <span class="combo-wood-item-price">${formatMoney(item.price)}</span>
-        </div>
-        <p class="combo-wood-item-desc">${escapeHtml(item.description || "")}</p>
-        <button type="button" class="combo-wood-add">Adicionar</button>
-      `;
-      bindAdd(row.querySelector(".combo-wood-add"), item, catId, catTitle, st, onToast);
-      body.appendChild(row);
-    });
-    grid.appendChild(box);
-  });
-
-  const foot = document.createElement("footer");
-  foot.className = "combo-wood-foot";
-  const wa = formatPhoneDisplay(store.whatsapp);
-  const addr = escapeHtml((store.address || "").replace(/^Av\.?/i, "AV. "));
-  foot.innerHTML = `
-    <div class="combo-wood-foot-block">
-      <span class="combo-wood-foot-ico" aria-hidden="true">🛵</span>
-      <div>
-        <p class="combo-wood-foot-label">PEÇA PELO DELIVERY</p>
-        <p class="combo-wood-foot-phone">${escapeHtml(wa)}</p>
-      </div>
-    </div>
-    <div class="combo-wood-foot-block combo-wood-foot-block--addr">
-      <span class="combo-wood-foot-ico" aria-hidden="true">📍</span>
-      <p class="combo-wood-foot-addr">${addr}</p>
-    </div>
-  `;
-
-  wrap.appendChild(head);
-  wrap.appendChild(grid);
-  wrap.appendChild(foot);
-  root.appendChild(wrap);
+function posterHeadlineForCat(cat) {
+  const raw = (cat.posterHeadline || "").trim();
+  if (raw) return raw.toUpperCase();
+  const t = (cat.title || "Cardápio").trim();
+  return t.toUpperCase().slice(0, 28);
 }
 
-/** Pastelaria — preto + amarelo, líderes de pontos */
-export function renderPosterPastel(root, cat, catId, catTitle, store, onToast) {
-  root.className = "pastel-poster-root";
-  root.innerHTML = "";
-
-  const wrap = document.createElement("div");
-  wrap.className = "pastel-poster";
-
-  const inner = document.createElement("div");
-  inner.className = "pastel-poster-inner";
-
-  const left = document.createElement("div");
-  left.className = "pastel-poster-left";
-
-  const h = document.createElement("h2");
-  h.className = "pastel-poster-h1";
-  h.textContent = "PASTEL";
-  left.appendChild(h);
-
-  (cat.sections || []).forEach((sec) => {
-    const st = (sec.title || "").trim();
-    const sub = (sec.subtitle || "").trim();
-    const isAdic = /adicional/i.test(st);
-    const box = document.createElement("section");
-    box.className = "pastel-poster-sec";
-    const tag = document.createElement("div");
-    tag.className = `pastel-poster-tag ${isAdic ? "pastel-poster-tag--yellow" : "pastel-poster-tag--white"}`;
-    tag.textContent = st.toUpperCase();
-    box.appendChild(tag);
-    if (sub) {
-      const ps = document.createElement("p");
-      ps.className = "pastel-poster-sec-sub";
-      ps.textContent = sub;
-      box.appendChild(ps);
-    }
-    const list = document.createElement("div");
-    list.className = "pastel-poster-list";
-    (sec.items || []).forEach((item) => {
-      const row = document.createElement("div");
-      row.className = "pastel-poster-row";
-      const priceTxt = `RS ${Number(item.price).toFixed(2).replace(".", ",")}`;
-      row.innerHTML = `
-        <div class="pastel-poster-row-line">
-          <span class="pastel-poster-name">${escapeHtml(item.name)}</span>
-          <span class="pastel-poster-dots" aria-hidden="true"></span>
-          <span class="pastel-poster-price">${priceTxt}</span>
-        </div>
-        <button type="button" class="pastel-poster-add">+</button>
-      `;
-      const addBtn = row.querySelector(".pastel-poster-add");
-      addBtn.setAttribute("aria-label", `Adicionar ${item.name || "item"}`);
-      bindAdd(addBtn, item, catId, catTitle, st, onToast);
-      list.appendChild(row);
-    });
-    box.appendChild(list);
-    left.appendChild(box);
-  });
-
-  const right = document.createElement("div");
-  right.className = "pastel-poster-right";
-  right.setAttribute("aria-hidden", "true");
-  right.innerHTML = `<div class="pastel-poster-right-bg"></div><div class="pastel-poster-right-plate"></div>`;
-
-  inner.appendChild(left);
-  inner.appendChild(right);
-  wrap.appendChild(inner);
-  root.appendChild(wrap);
+function posterPhotoThemeForCat(cat) {
+  const key = String(cat.posterPhotoTheme || "")
+    .trim()
+    .toLowerCase();
+  if (key && POSTER_PHOTO_PAIRS[key]) return key;
+  const id = String(cat.id || "");
+  const mapId = {
+    "burgers-menu": "burger",
+    hamburgueres: "combo",
+    pastelaria: "pastel",
+    pizza: "pizza",
+    doces: "sweet",
+    bebidas: "drinks",
+  };
+  if (mapId[id]) return mapId[id];
+  const th = String(cat.theme || "").toLowerCase();
+  if (th === "pizza") return "pizza";
+  if (th === "pastel") return "pastel";
+  if (th === "sweet") return "sweet";
+  if (th === "burger") return "burger";
+  return "burger";
 }
 
 function priceShort(n) {
@@ -213,12 +158,13 @@ function appendBurgerSection(container, sec, catId, catTitle, onToast, burgerSty
   }
   (sec.items || []).forEach((item) => {
     if (burgerStyle) {
+      const desc = String(item.description || "").trim();
       const row = document.createElement("div");
       row.className = "burger-poster-burger-row";
       row.innerHTML = `
         <div class="burger-poster-burger-text">
           <span class="burger-poster-item-name">${escapeHtml(item.name)}</span>
-          <span class="burger-poster-item-desc">${escapeHtml(item.description || "")}</span>
+          ${desc ? `<span class="burger-poster-item-desc">${escapeHtml(desc)}</span>` : ""}
         </div>
         <div class="burger-poster-price-ring"><span>${priceShort(item.price)}</span></div>
         <button type="button" class="burger-poster-add">+</button>
@@ -242,8 +188,41 @@ function appendBurgerSection(container, sec, catId, catTitle, onToast, burgerSty
   container.appendChild(secEl);
 }
 
-/** Menu burgers — preto + laranja, duas colunas */
-export function renderPosterBurger(root, cat, catId, catTitle, store, onToast) {
+function buildPosterPhotoColumn(cat) {
+  const theme = posterPhotoThemeForCat(cat);
+  const pair = POSTER_PHOTO_PAIRS[theme] || POSTER_PHOTO_PAIRS.burger;
+  const photos = document.createElement("div");
+  photos.className = "burger-poster-photos";
+  photos.innerHTML = pair
+    .map(
+      (shot, i) => `
+    <figure class="burger-poster-shot burger-poster-shot--duo">
+      <img
+        src="${shot.src}"
+        alt="${escapeHtml(shot.alt)}"
+        width="360"
+        height="360"
+        loading="${i === 0 ? "eager" : "lazy"}"
+        ${i === 0 ? 'fetchpriority="high"' : ""}
+        decoding="async"
+        referrerpolicy="no-referrer"
+      />
+    </figure>`
+    )
+    .join("");
+  const disc = document.createElement("p");
+  disc.className = "burger-poster-disclaimer";
+  disc.textContent =
+    "Imagens meramente ilustrativas — o preparo e a apresentação podem variar.";
+  photos.appendChild(disc);
+  return photos;
+}
+
+/**
+ * Cardápio unificado: preto + laranja, duas colunas quando há `column` left/right;
+ * caso contrário, todas as seções na esquerda e fotos à direita.
+ */
+export function renderPosterMenu(root, cat, catId, catTitle, _store, onToast) {
   root.className = "burger-poster-root";
   root.innerHTML = "";
 
@@ -252,16 +231,25 @@ export function renderPosterBurger(root, cat, catId, catTitle, store, onToast) {
 
   const header = document.createElement("header");
   header.className = "burger-poster-header";
+  const line2 = escapeHtml(posterHeadlineForCat(cat));
   header.innerHTML = `
     <div class="burger-poster-brand">
       <span class="burger-poster-menu">MENU</span>
       <span class="burger-poster-line"></span>
-      <span class="burger-poster-burguers">BURGUERS</span>
+      <span class="burger-poster-burguers">${line2}</span>
     </div>
   `;
 
+  const sections = cat.sections || [];
+  const hasColumnSplit = sections.some(
+    (s) => s.column === "left" || s.column === "right"
+  );
+
   const grid = document.createElement("div");
   grid.className = "burger-poster-grid";
+  if (!hasColumnSplit) {
+    grid.classList.add("burger-poster-grid--photos-first-sm");
+  }
 
   const left = document.createElement("div");
   left.className = "burger-poster-col burger-poster-col--left";
@@ -269,41 +257,28 @@ export function renderPosterBurger(root, cat, catId, catTitle, store, onToast) {
   const right = document.createElement("div");
   right.className = "burger-poster-col burger-poster-col--right";
 
-  const photos = document.createElement("div");
-  photos.className = "burger-poster-photos";
-  photos.innerHTML = `
-    <div class="burger-poster-circle burger-poster-circle--a"></div>
-    <div class="burger-poster-circle burger-poster-circle--b"></div>
-  `;
-  right.appendChild(photos);
+  right.appendChild(buildPosterPhotoColumn(cat));
 
-  const sections = cat.sections || [];
-  sections
-    .filter((s) => s.column !== "right")
-    .forEach((sec) => appendBurgerSection(left, sec, catId, catTitle, onToast, true));
-  sections
-    .filter((s) => s.column === "right")
-    .forEach((sec) => appendBurgerSection(right, sec, catId, catTitle, onToast, false));
+  if (hasColumnSplit) {
+    sections
+      .filter((s) => s.column !== "right")
+      .forEach((sec) => appendBurgerSection(left, sec, catId, catTitle, onToast, true));
+    sections
+      .filter((s) => s.column === "right")
+      .forEach((sec) => appendBurgerSection(right, sec, catId, catTitle, onToast, true));
+  } else {
+    sections.forEach((sec) =>
+      appendBurgerSection(left, sec, catId, catTitle, onToast, true)
+    );
+  }
 
   grid.appendChild(left);
   grid.appendChild(right);
 
-  const foot = document.createElement("footer");
-  foot.className = "burger-poster-foot";
-  const wa = formatPhoneDisplay(store.whatsapp);
-  foot.innerHTML = `
-    <div class="burger-poster-foot-item">
-      <span aria-hidden="true">🛵</span>
-      <div><strong>DELIVERY</strong><br/>${escapeHtml(wa)}</div>
-    </div>
-    <div class="burger-poster-foot-item burger-poster-foot-item--addr">
-      <span aria-hidden="true">📍</span>
-      <div>AV. DOMINGOS BATISTA DE LIMA, 598 — JD GUANABARA</div>
-    </div>
-  `;
-
   wrap.appendChild(header);
   wrap.appendChild(grid);
-  wrap.appendChild(foot);
   root.appendChild(wrap);
 }
+
+/** @deprecated Use renderPosterMenu — mantido para imports antigos. */
+export const renderPosterBurger = renderPosterMenu;

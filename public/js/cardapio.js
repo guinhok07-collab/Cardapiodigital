@@ -2,12 +2,7 @@ import { loadMenuData } from "./data-loader.js";
 import { addItem } from "./cart.js";
 import { initCartBadge } from "./cart-badge.js";
 import { DEFAULT_HOME_HERO } from "./theme-assets.js";
-import {
-  renderComboWood,
-  renderPosterPastel,
-  renderPosterBurger,
-  setBodyLayoutClass,
-} from "./cardapio-layouts.js";
+import { renderPosterMenu, setBodyLayoutClass } from "./cardapio-layouts.js";
 
 function formatMoney(n) {
   return Number(n).toLocaleString("pt-BR", {
@@ -55,6 +50,11 @@ function applyStoreHeroBackground(store) {
 
 function getMenuLayout(cat) {
   return (cat && cat.menuLayout) || "default";
+}
+
+/** Mesmo visual do menu burgers (poster preto + laranja). */
+function isPosterMenuLayout(layout) {
+  return ["poster-burger", "poster-menu", "combo-wood", "poster-pastel"].includes(layout);
 }
 
 function applyLayoutBackground(store, layout) {
@@ -291,16 +291,8 @@ async function renderCardapio() {
 
     const catTitle = cat.title || "Item";
 
-    if (layout === "combo-wood") {
-      renderComboWood(root, cat, catId, catTitle, store, toast);
-      return;
-    }
-    if (layout === "poster-pastel") {
-      renderPosterPastel(root, cat, catId, catTitle, store, toast);
-      return;
-    }
-    if (layout === "poster-burger") {
-      renderPosterBurger(root, cat, catId, catTitle, store, toast);
+    if (isPosterMenuLayout(layout)) {
+      renderPosterMenu(root, cat, catId, catTitle, store, toast);
       return;
     }
 

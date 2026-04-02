@@ -190,54 +190,6 @@
   cursor: pointer;
 }
 
-.combo-wood-foot {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-  padding: 0.75rem;
-  background: rgba(234, 88, 12, 0.92);
-  border-radius: 12px;
-  font-size: 0.72rem;
-}
-
-.combo-wood-foot-block {
-  display: flex;
-  gap: 0.45rem;
-  align-items: flex-start;
-  color: #fff;
-}
-
-.combo-wood-foot-block--addr {
-  text-align: right;
-  justify-content: flex-end;
-}
-
-.combo-wood-foot-ico {
-  font-size: 1.25rem;
-}
-
-.combo-wood-foot-label {
-  margin: 0;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.65rem;
-}
-
-.combo-wood-foot-phone {
-  margin: 0.15rem 0 0;
-  font-size: 0.95rem;
-  font-weight: 800;
-}
-
-.combo-wood-foot-addr {
-  margin: 0;
-  line-height: 1.35;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
 /* ========== Poster burgers preto + laranja ========== */
 .page-cardapio.page-cardapio--clean.layout-poster-burger {
   background: #000 none !important;
@@ -296,6 +248,16 @@
   .burger-poster-grid {
     grid-template-columns: 1fr;
   }
+
+  .burger-poster-grid--photos-first-sm .burger-poster-col--right {
+    order: -1;
+  }
+}
+
+.burger-poster-sec + .burger-poster-sec {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .burger-poster-sec-title {
@@ -409,53 +371,46 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
-.burger-poster-circle {
-  aspect-ratio: 1;
+.burger-poster-shot {
+  margin: 0;
+  overflow: hidden;
   border-radius: 50%;
   border: 5px solid #ff8c00;
-  box-shadow: 0 0 0 2px rgba(194, 65, 12, 0.6);
-  background-size: cover;
-  background-position: center;
+  box-shadow:
+    0 0 0 2px rgba(194, 65, 12, 0.65),
+    0 10px 28px rgba(0, 0, 0, 0.5);
+  aspect-ratio: 1;
+  background: #1a0a00;
 }
 
-.burger-poster-circle--a {
-  background-image: url("https://images.unsplash.com/photo-1553979459-b859fc4b6b29?auto=format&fit=crop&w=400&h=400&q=80");
-}
-
-.burger-poster-circle--b {
-  background-image: url("https://images.unsplash.com/photo-1568901346375-23c945677c61?auto=format&fit=crop&w=400&h=400&q=80");
-}
-
-.burger-poster-foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 2px solid rgba(255, 140, 0, 0.4);
-  font-size: 0.68rem;
-}
-
-.burger-poster-foot-item {
-  display: flex;
-  gap: 0.4rem;
-  align-items: flex-start;
-  max-width: 48%;
-}
-
-.burger-poster-foot-item--addr {
-  text-align: right;
-  flex-direction: row-reverse;
-}
-
-.burger-poster-foot-item strong {
+.burger-poster-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   display: block;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
+  transform: scale(1.06);
+}
+
+.burger-poster-shot--duo {
+  width: 100%;
+  max-width: min(100%, 248px);
+  margin-inline: auto;
+}
+
+.burger-poster-disclaimer {
+  margin: 0.15rem 0 0;
+  padding: 0 0.35rem;
+  font-size: 0.52rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.52);
+  text-align: center;
+  font-style: italic;
+  max-width: 260px;
+  margin-inline: auto;
 }
 
 /* ========== Pastel amarelo / preto ========== */
