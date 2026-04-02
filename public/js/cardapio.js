@@ -165,12 +165,15 @@ function buildItemCard(item, catId, catTitle, sectionTitle, categoryTheme) {
   bodyEl.innerHTML = `
     <h2>${escapeHtml(item.name)}</h2>
     <p class="item-desc">${escapeHtml(item.description || "")}</p>
-    <div class="item-price">${formatMoney(item.price)}</div>
+    <div class="item-row-actions">
+      <span class="item-price">${formatMoney(item.price)}</span>
+    </div>
   `;
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "btn-add-cart";
-  btn.textContent = "Adicionar ao carrinho";
+  btn.textContent = "Adicionar";
+  btn.setAttribute("aria-label", "Adicionar ao carrinho");
   btn.addEventListener("click", () => {
     addItem({
       catId,
@@ -183,7 +186,7 @@ function buildItemCard(item, catId, catTitle, sectionTitle, categoryTheme) {
     });
     toast("Adicionado ao carrinho");
   });
-  bodyEl.appendChild(btn);
+  bodyEl.querySelector(".item-row-actions").appendChild(btn);
   art.appendChild(imgWrap);
   art.appendChild(bodyEl);
   return art;
