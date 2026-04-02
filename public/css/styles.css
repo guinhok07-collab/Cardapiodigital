@@ -2063,6 +2063,173 @@ body.page-home:not(.page-home--clean) {
     0 1px 0 rgba(0, 0, 0, 0.5);
 }
 
+/* Home — mesmo DNA do cardápio poster (preto + laranja) */
+.page-home--clean.page-home--poster {
+  background: #000;
+  color: #fafafa;
+}
+
+.page-home--clean.page-home--poster .home-bg {
+  opacity: 0.85;
+}
+
+.page-home--clean.page-home--poster .home-bar {
+  background: rgba(0, 0, 0, 0.94);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.4);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.65);
+}
+
+.page-home--clean.page-home--poster .home-bar-brand,
+.page-home--clean.page-home--poster .home-bar-cart {
+  color: #fff;
+}
+
+.page-home--clean.page-home--poster .home-open-banner {
+  background: rgba(0, 0, 0, 0.92);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.25);
+}
+
+.page-home--clean.page-home--poster .neon-open {
+  color: #ff8c00;
+  text-shadow:
+    0 0 3px rgba(255, 140, 0, 0.9),
+    0 0 14px rgba(255, 140, 0, 0.55),
+    0 0 28px rgba(194, 65, 12, 0.45);
+}
+
+.page-home--clean.page-home--poster .home-content {
+  max-width: min(720px, 100%);
+}
+
+.page-home--clean.page-home--poster .home-intro--poster {
+  margin-bottom: 1.5rem;
+}
+
+.page-home--clean.page-home--poster .home-poster-kicker {
+  margin: 0;
+  font-family: "Bebas Neue", "Impact", sans-serif;
+  font-size: clamp(2rem, 9vw, 2.85rem);
+  letter-spacing: 0.14em;
+  color: #fff;
+  line-height: 1;
+}
+
+.page-home--clean.page-home--poster .home-poster-line {
+  display: block;
+  width: min(280px, 80%);
+  height: 4px;
+  margin: 0.2rem auto 0.6rem;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.page-home--clean.page-home--poster .home-intro-name {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: clamp(1.5rem, 5vw, 1.85rem);
+  font-weight: 700;
+  color: #ff8c00;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(255, 140, 0, 0.35);
+}
+
+.page-home--clean.page-home--poster .home-intro-lead {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.page-home--clean.page-home--poster .home-intro-sub {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.page-home--clean.page-home--poster .home-section-label {
+  color: #ff8c00;
+  text-shadow: 0 0 24px rgba(255, 140, 0, 0.25);
+}
+
+.page-home--clean.page-home--poster .home-cat-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+@media (min-width: 480px) {
+  .page-home--clean.page-home--poster .home-cat-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.page-home--clean.page-home--poster .home-cat-card {
+  background: linear-gradient(165deg, rgba(20, 12, 6, 0.95) 0%, rgba(0, 0, 0, 0.96) 100%);
+  border: 1px solid rgba(255, 140, 0, 0.4);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 140, 0, 0.08) inset;
+}
+
+.page-home--clean.page-home--poster .home-cat-top {
+  border-bottom: 2px solid rgba(255, 140, 0, 0.45);
+  box-shadow: inset 0 -12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.page-home--clean.page-home--poster .home-cat-name {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ff8c00;
+}
+
+.page-home--clean.page-home--poster .home-cat-desc {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.page-home--clean.page-home--poster .home-cat-arrow {
+  color: #ff8c00;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .page-home--clean.page-home--poster .home-cat-card:hover {
+    border-color: rgba(255, 180, 80, 0.65);
+    box-shadow:
+      0 14px 40px rgba(0, 0, 0, 0.6),
+      0 0 28px rgba(255, 140, 0, 0.2);
+  }
+}
+
+.page-home--clean.page-home--poster .home-fab {
+  background: linear-gradient(180deg, #ea580c 0%, #9a3412 100%);
+  border: 1px solid rgba(255, 200, 120, 0.35);
+  color: #fff !important;
+}
+
+.page-home--clean.page-home--poster .home-footer {
+  border-top: 1px solid rgba(255, 140, 0, 0.2);
+}
+
+.page-home--clean.page-home--poster .home-foot-note {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.page-home--clean.page-home--poster .footer-address {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.page-home--clean.page-home--poster .app-tabbar {
+  background: rgba(0, 0, 0, 0.94);
+  border-top: 1px solid rgba(255, 140, 0, 0.38);
+}
+
+.page-home--clean.page-home--poster .app-tab {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.page-home--clean.page-home--poster .app-tab[aria-current="page"] {
+  color: #ff8c00;
+  background: rgba(255, 140, 0, 0.14);
+  box-shadow: 0 0 0 1px rgba(255, 140, 0, 0.2) inset;
+}
+
 .home-cat-list {
   display: flex;
   flex-direction: column;

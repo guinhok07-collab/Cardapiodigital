@@ -198,7 +198,7 @@
 }
 
 .burger-poster {
-  max-width: 720px;
+  max-width: min(720px, 100%);
   margin: 0 auto;
   padding-bottom: 1rem;
 }
@@ -239,14 +239,43 @@
 
 .burger-poster-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem 1rem;
+  gap: 0.65rem 0.85rem;
   align-items: start;
 }
 
+/* Duas colunas de conteúdo (ex.: tradicionais + acompanhamentos): divide 50/50 com recorte seguro */
+.burger-poster-grid--split {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* Só lista à esquerda e foto à direita: coluna da foto fixa — evita foto por cima do texto */
+.burger-poster-grid--photo-only {
+  grid-template-columns: minmax(0, 1fr) minmax(132px, 210px);
+}
+
+.burger-poster-col--left,
+.burger-poster-col--right {
+  min-width: 0;
+}
+
+.burger-poster-col--right {
+  justify-self: stretch;
+}
+
+.burger-poster-grid--photo-only .burger-poster-col--right {
+  justify-self: end;
+  max-width: 210px;
+}
+
 @media (max-width: 600px) {
-  .burger-poster-grid {
+  .burger-poster-grid--split,
+  .burger-poster-grid--photo-only {
     grid-template-columns: 1fr;
+  }
+
+  .burger-poster-grid--photo-only .burger-poster-col--right {
+    justify-self: center;
+    max-width: 220px;
   }
 
   .burger-poster-grid--photos-first-sm .burger-poster-col--right {
@@ -255,8 +284,8 @@
 }
 
 .burger-poster-sec + .burger-poster-sec {
-  margin-top: 1rem;
-  padding-top: 0.75rem;
+  margin-top: 0.85rem;
+  padding-top: 0.65rem;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
@@ -281,38 +310,46 @@
   line-height: 1.35;
 }
 
+.burger-poster-burger-text {
+  min-width: 0;
+}
+
 .burger-poster-burger-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
-  gap: 0.35rem;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.3rem 0.35rem;
   align-items: start;
-  margin-bottom: 0.65rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.48rem;
+  padding-bottom: 0.42rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .burger-poster-item-name {
   display: block;
   font-family: "Oswald", sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   color: #ff8c00;
   line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 .burger-poster-item-desc {
   display: block;
-  font-size: 0.55rem;
+  font-size: 0.52rem;
   color: rgba(255, 255, 255, 0.88);
   text-transform: uppercase;
-  line-height: 1.3;
-  margin-top: 0.15rem;
+  line-height: 1.28;
+  margin-top: 0.12rem;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 .burger-poster-price-ring {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #ffb347, #ff8c00 55%, #c65d00);
   border: 3px solid #c2410c;
@@ -324,7 +361,7 @@
 }
 
 .burger-poster-price-ring span {
-  font-size: 0.58rem;
+  font-size: 0.54rem;
   font-weight: 800;
   color: #fff;
   text-align: center;
@@ -338,9 +375,9 @@
   background: rgba(255, 140, 0, 0.25);
   color: #ff8c00;
   font-weight: 800;
-  font-size: 1rem;
-  width: 32px;
-  height: 32px;
+  font-size: 0.95rem;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   line-height: 1;
 }
@@ -370,20 +407,24 @@
 .burger-poster-photos {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  margin-bottom: 0.85rem;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+  position: relative;
+  z-index: 0;
 }
 
 .burger-poster-shot {
   margin: 0;
   overflow: hidden;
   border-radius: 50%;
-  border: 5px solid #ff8c00;
+  border: 4px solid #ff8c00;
   box-shadow:
     0 0 0 2px rgba(194, 65, 12, 0.65),
-    0 10px 28px rgba(0, 0, 0, 0.5);
+    0 8px 22px rgba(0, 0, 0, 0.5);
   aspect-ratio: 1;
   background: #1a0a00;
+  flex-shrink: 0;
 }
 
 .burger-poster-shot img {
@@ -392,24 +433,24 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
-.burger-poster-shot--duo {
+.burger-poster-shot--single {
   width: 100%;
-  max-width: min(100%, 248px);
+  max-width: min(100%, 200px);
   margin-inline: auto;
 }
 
 .burger-poster-disclaimer {
-  margin: 0.15rem 0 0;
-  padding: 0 0.35rem;
-  font-size: 0.52rem;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.52);
+  margin: 0.1rem 0 0;
+  padding: 0 0.25rem;
+  font-size: 0.5rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.5);
   text-align: center;
   font-style: italic;
-  max-width: 260px;
+  max-width: 220px;
   margin-inline: auto;
 }
 

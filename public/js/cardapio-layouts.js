@@ -41,68 +41,32 @@ function bindAdd(btn, item, catId, catTitle, sectionTitle, onToast) {
 
 const U = "https://images.unsplash.com";
 
-/** Duas fotos circulares por tema — imagens meramente ilustrativas (aviso no HTML). */
-const POSTER_PHOTO_PAIRS = {
-  burger: [
-    {
-      src: `${U}/photo-1568901346375-23c945677c61?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Hambúrguer artesanal com queijo derretido",
-    },
-    {
-      src: `${U}/photo-1550547660-d9450f859349?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Hambúrguer no pão com gergelim",
-    },
-  ],
-  combo: [
-    {
-      src: `${U}/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Combo de lanche com batata e refrigerante",
-    },
-    {
-      src: `${U}/photo-1555992336-cbf0c433c5cf?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Hambúrguer com batata frita",
-    },
-  ],
-  pastel: [
-    {
-      src: `${U}/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Pastéis fritos crocantes",
-    },
-    {
-      src: `${U}/photo-1625937282814-1d77c75f9f2e?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Pastel e salgados",
-    },
-  ],
-  pizza: [
-    {
-      src: `${U}/photo-1513104890138-7c7496599c91?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Pizza com queijo e calabresa",
-    },
-    {
-      src: `${U}/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Pizza fatia com ingredientes",
-    },
-  ],
-  sweet: [
-    {
-      src: `${U}/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Sobremesa doce",
-    },
-    {
-      src: `${U}/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Chocolate e doces",
-    },
-  ],
-  drinks: [
-    {
-      src: `${U}/photo-1544145945-f0a224ac7a5e?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Refrigerantes e bebidas geladas",
-    },
-    {
-      src: `${U}/photo-1621506289937-577413a31a3d?auto=format&fit=crop&w=720&h=720&q=88`,
-      alt: "Suco e copos com gelo",
-    },
-  ],
+/** Uma foto circular por tema — imagens meramente ilustrativas (aviso no HTML). */
+const POSTER_PHOTO_ONE = {
+  burger: {
+    src: `${U}/photo-1568901346375-23c945677c61?auto=format&fit=crop&w=720&h=720&q=88`,
+    alt: "Hambúrguer artesanal com queijo derretido",
+  },
+  combo: {
+    src: `${U}/photo-1555992336-cbf0c433c5cf?auto=format&fit=crop&w=720&h=720&q=88`,
+    alt: "Hambúrguer com batata frita e molho",
+  },
+  pastel: {
+    src: `${U}/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=720&h=720&q=88`,
+    alt: "Pastéis fritos crocantes",
+  },
+  pizza: {
+    src: `${U}/photo-1513104890138-7c7496599c91?auto=format&fit=crop&w=720&h=720&q=88`,
+    alt: "Pizza com queijo e ingredientes",
+  },
+  sweet: {
+    src: `${U}/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=720&h=720&q=88`,
+    alt: "Sobremesa doce",
+  },
+  drinks: {
+    src: `${U}/photo-1544145945-f0a224ac7a5e?auto=format&fit=crop&w=720&h=720&q=88`,
+    alt: "Refrigerantes e bebidas geladas",
+  },
 };
 
 function posterHeadlineForCat(cat) {
@@ -116,7 +80,7 @@ function posterPhotoThemeForCat(cat) {
   const key = String(cat.posterPhotoTheme || "")
     .trim()
     .toLowerCase();
-  if (key && POSTER_PHOTO_PAIRS[key]) return key;
+  if (key && POSTER_PHOTO_ONE[key]) return key;
   const id = String(cat.id || "");
   const mapId = {
     "burgers-menu": "burger",
@@ -190,26 +154,22 @@ function appendBurgerSection(container, sec, catId, catTitle, onToast, burgerSty
 
 function buildPosterPhotoColumn(cat) {
   const theme = posterPhotoThemeForCat(cat);
-  const pair = POSTER_PHOTO_PAIRS[theme] || POSTER_PHOTO_PAIRS.burger;
+  const shot = POSTER_PHOTO_ONE[theme] || POSTER_PHOTO_ONE.burger;
   const photos = document.createElement("div");
   photos.className = "burger-poster-photos";
-  photos.innerHTML = pair
-    .map(
-      (shot, i) => `
-    <figure class="burger-poster-shot burger-poster-shot--duo">
+  photos.innerHTML = `
+    <figure class="burger-poster-shot burger-poster-shot--single">
       <img
         src="${shot.src}"
         alt="${escapeHtml(shot.alt)}"
         width="360"
         height="360"
-        loading="${i === 0 ? "eager" : "lazy"}"
-        ${i === 0 ? 'fetchpriority="high"' : ""}
+        loading="eager"
+        fetchpriority="high"
         decoding="async"
         referrerpolicy="no-referrer"
       />
-    </figure>`
-    )
-    .join("");
+    </figure>`;
   const disc = document.createElement("p");
   disc.className = "burger-poster-disclaimer";
   disc.textContent =
@@ -247,8 +207,10 @@ export function renderPosterMenu(root, cat, catId, catTitle, _store, onToast) {
 
   const grid = document.createElement("div");
   grid.className = "burger-poster-grid";
-  if (!hasColumnSplit) {
-    grid.classList.add("burger-poster-grid--photos-first-sm");
+  if (hasColumnSplit) {
+    grid.classList.add("burger-poster-grid--split");
+  } else {
+    grid.classList.add("burger-poster-grid--photo-only", "burger-poster-grid--photos-first-sm");
   }
 
   const left = document.createElement("div");
