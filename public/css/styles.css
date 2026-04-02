@@ -16,6 +16,11 @@
     #ea580c 100%
   );
   --burger-bg-photo: url("../images/bg-burger-dark.png");
+  /* Fundos por categoria (Unsplash — uso permitido com atribuição) */
+  --cat-bg-pizza: url("https://images.unsplash.com/photo-1513104890138-7c7496599c91?auto=format&fit=crop&w=1920&q=80");
+  --cat-bg-pastel: url("https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1920&q=80");
+  --cat-bg-sweet: url("https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1920&q=80");
+  --cat-bg-drinks: url("https://images.unsplash.com/photo-1544145945-f0a224ac7a5e?auto=format&fit=crop&w=1920&q=80");
   font-family: "Segoe UI", system-ui, sans-serif;
 }
 
@@ -1096,9 +1101,14 @@ body.page-home {
   opacity: 0.9;
 }
 
-/* Cardápio — pastelaria: cinza escuro + detalhe amarelo suave */
+/* Cardápio — pastelaria: foto (pastéis/empanadas) + overlay escuro */
 .page-cardapio.cardapio-theme-pastel {
-  background: linear-gradient(180deg, #18181b 0%, #0a0a0a 100%);
+  background-color: #0a0a0a;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.72)),
+    var(--cat-bg-pastel);
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
   color: #e4e4e7;
 }
 
@@ -1198,9 +1208,14 @@ body.page-home {
   color: #71717a;
 }
 
-/* Cardápio — pizza */
+/* Cardápio — pizza: foto de pizza + overlay */
 .page-cardapio.cardapio-theme-pizza {
-  background: linear-gradient(180deg, #1c1414 0%, #0c0a0a 100%);
+  background-color: #0c0a0a;
+  background-image: linear-gradient(rgba(24, 14, 14, 0.62), rgba(12, 8, 8, 0.78)),
+    var(--cat-bg-pizza);
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
   color: #fef2f2;
 }
 
@@ -1288,9 +1303,14 @@ body.page-home {
   color: #9ca3af;
 }
 
-/* Cardápio — doces */
+/* Cardápio — doces: foto (sobremesa) + overlay */
 .page-cardapio.cardapio-theme-sweet {
-  background: linear-gradient(180deg, #292524 0%, #1c1917 100%);
+  background-color: #1c1917;
+  background-image: linear-gradient(rgba(28, 22, 18, 0.58), rgba(20, 16, 14, 0.8)),
+    var(--cat-bg-sweet);
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
   color: #fffbeb;
 }
 
@@ -1353,9 +1373,17 @@ body.page-home {
   color: #d6d3d1;
 }
 
-/* Cardápio — padrão (bebidas) */
+/* Cardápio — padrão (bebidas): foto suave + overlay claro (texto escuro) */
 .page-cardapio.cardapio-theme-default {
-  background: #f4f4f5;
+  background-color: #f4f4f5;
+  background-image: linear-gradient(
+      rgba(244, 244, 245, 0.9),
+      rgba(244, 244, 245, 0.94)
+    ),
+    var(--cat-bg-drinks);
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
   color: #18181b;
 }
 
