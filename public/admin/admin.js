@@ -38,6 +38,18 @@
       .replace(/^-|-$/g, "") || "cat-" + Date.now();
   }
 
+  /** Tema visual → foto padrão da bolinha (cardápio poster). */
+  function themeToPosterPhoto(t) {
+    var m = {
+      default: "drinks",
+      burger: "burger",
+      pastel: "pastel",
+      pizza: "pizza",
+      sweet: "sweet",
+    };
+    return m[t] || "burger";
+  }
+
   function showLogin() {
     $("login-section").classList.remove("hidden");
     $("panel-section").classList.add("hidden");
@@ -201,6 +213,12 @@
       else menuData.categories[ci].backgroundUrl = v;
       return;
     }
+    if (f === "posterImageUrl" || f === "posterHeadline") {
+      v = String(v).trim();
+      if (!v) delete menuData.categories[ci][f];
+      else menuData.categories[ci][f] = v;
+      return;
+    }
     menuData.categories[ci][f] = v;
   }
 
@@ -211,6 +229,12 @@
     var f = inp.getAttribute("data-field");
     var v = inp.value;
     if (!menuData.categories[ci].sections[si]) return;
+    if (f === "column") {
+      v = String(v).trim();
+      if (!v) delete menuData.categories[ci].sections[si].column;
+      else menuData.categories[ci].sections[si].column = v;
+      return;
+    }
     menuData.categories[ci].sections[si][f] = v.trim();
   }
 
@@ -274,6 +298,70 @@
         "</select></label>";
       box.appendChild(subRow);
 
+      var ml = cat.menuLayout || "poster-burger";
+      var ph = cat.posterHeadline || "";
+      var ppt = cat.posterPhotoTheme || themeToPosterPhoto(cat.theme || "default");
+      var piu = cat.posterImageUrl || "";
+      var posterBox = document.createElement("div");
+      posterBox.className = "cat-poster";
+      posterBox.innerHTML =
+        '<p class="cat-poster-lead">Cartaz do cardápio (preto + laranja) — mesmo padrão do site.</p>' +
+        '<div class="poster-grid">' +
+        '<label>Layout <select data-ci="' +
+        ci +
+        '" data-field="menuLayout">' +
+        '<option value="poster-burger"' +
+        (ml === "poster-burger" ? " selected" : "") +
+        ">Poster (recomendado)</option>" +
+        '<option value="combo-wood"' +
+        (ml === "combo-wood" ? " selected" : "") +
+        ">Legado: combo madeira</option>" +
+        '<option value="poster-pastel"' +
+        (ml === "poster-pastel" ? " selected" : "") +
+        ">Legado: poster pastel</option>" +
+        '<option value="default"' +
+        (ml === "default" ? " selected" : "") +
+        ">Lista simples</option>" +
+        "</select></label>" +
+        '<label>Título no cartaz (ex.: BURGERS) <input type="text" data-ci="' +
+        ci +
+        '" data-field="posterHeadline" value="' +
+        escapeAttr(ph) +
+        '" placeholder="Vazio = nome da categoria" /></label>' +
+        '<label>Foto da bolinha (tema) <select data-ci="' +
+        ci +
+        '" data-field="posterPhotoTheme">' +
+        '<option value="burger"' +
+        (ppt === "burger" ? " selected" : "") +
+        ">Hambúrguer</option>" +
+        '<option value="combo"' +
+        (ppt === "combo" ? " selected" : "") +
+        ">Combos / lanche + batata</option>" +
+        '<option value="pastel"' +
+        (ppt === "pastel" ? " selected" : "") +
+        ">Pastelaria</option>" +
+        '<option value="pizza"' +
+        (ppt === "pizza" ? " selected" : "") +
+        ">Pizza</option>" +
+        '<option value="sweet"' +
+        (ppt === "sweet" ? " selected" : "") +
+        ">Doces</option>" +
+        '<option value="drinks"' +
+        (ppt === "drinks" ? " selected" : "") +
+        ">Bebidas</option>" +
+        "</select></label>" +
+        '<label class="full">Imagem própria na bolinha (URL, opcional)<input type="url" data-ci="' +
+        ci +
+        '" data-field="posterImageUrl" value="' +
+        escapeAttr(piu) +
+        '" placeholder="https://… — sobrepõe o tema" /></label>' +
+        "</div>";
+      box.appendChild(posterBox);
+      posterBox.querySelectorAll("input, select").forEach(function (inp) {
+        inp.addEventListener("input", syncCat);
+        inp.addEventListener("change", syncCat);
+      });
+
       var bgRow = document.createElement("label");
       bgRow.className = "cat-bg-row";
       bgRow.innerHTML =
@@ -285,7 +373,9 @@
       box.appendChild(bgRow);
 
       box
-        .querySelectorAll(".cat-grid input, .cat-sub input, .cat-theme-label select, .cat-bg-row input")
+        .querySelectorAll(
+          ".cat-grid input, .cat-sub input, .cat-theme-label select, .cat-bg-row input, .cat-poster input, .cat-poster select"
+        )
         .forEach(function (inp) {
           inp.addEventListener("input", syncCat);
           inp.addEventListener("change", syncCat);
@@ -319,7 +409,22 @@
             si +
             '" data-field="subtitle" value="' +
             escapeAttr(sec.subtitle || "") +
-            '" /></label></div>' +
+            '" /></label>' +
+            '<label>Coluna no cartaz <select data-ci="' +
+            ci +
+            '" data-si="' +
+            si +
+            '" data-field="column">' +
+            '<option value=""' +
+            (!sec.column ? " selected" : "") +
+            ">Automático</option>" +
+            '<option value="left"' +
+            (sec.column === "left" ? " selected" : "") +
+            ">Esquerda</option>" +
+            '<option value="right"' +
+            (sec.column === "right" ? " selected" : "") +
+            ">Direita</option>" +
+            "</select></label></div>" +
             '<div class="items-wrap sec-items" data-for="' +
             ci +
             "-" +
@@ -336,8 +441,9 @@
           (sec.items || []).forEach(function (item, ii) {
             wrap.appendChild(renderItem(ci, ii, item, si));
           });
-          secBox.querySelectorAll(".sec-grid input").forEach(function (inp) {
+          secBox.querySelectorAll(".sec-grid input, .sec-grid select").forEach(function (inp) {
             inp.addEventListener("input", syncSectionMeta);
+            inp.addEventListener("change", syncSectionMeta);
           });
           secBox.querySelector(".rm-sec").addEventListener("click", function () {
             menuData.categories[ci].sections.splice(si, 1);
@@ -459,24 +565,40 @@
   function syncAll() {
     readStoreForm();
     document
-      .querySelectorAll(".cat-grid input, .cat-sub input, .cat-theme-label select, .cat-bg-row input")
+      .querySelectorAll(
+        ".cat-grid input, .cat-sub input, .cat-theme-label select, .cat-bg-row input, .cat-poster input, .cat-poster select"
+      )
       .forEach(function (inp) {
         var ci = +inp.dataset.ci;
         var f = inp.getAttribute("data-field");
         var v = inp.value;
         if (f === "id") v = slugify(v);
         if (f === "subtitle" || f === "backgroundUrl") v = v.trim();
+        if (f === "posterImageUrl" || f === "posterHeadline") {
+          v = String(v).trim();
+          if (menuData.categories[ci]) {
+            if (!v) delete menuData.categories[ci][f];
+            else menuData.categories[ci][f] = v;
+          }
+          return;
+        }
         if (menuData.categories[ci]) {
           if (f === "backgroundUrl" && !v) delete menuData.categories[ci].backgroundUrl;
           else menuData.categories[ci][f] = v;
         }
       });
-    document.querySelectorAll(".sec-grid input").forEach(function (inp) {
+    document.querySelectorAll(".sec-grid input, .sec-grid select").forEach(function (inp) {
       var ci = +inp.dataset.ci;
       var si = +inp.dataset.si;
       var f = inp.getAttribute("data-field");
-      if (menuData.categories[ci] && menuData.categories[ci].sections[si])
-        menuData.categories[ci].sections[si][f] = inp.value.trim();
+      if (!menuData.categories[ci] || !menuData.categories[ci].sections[si]) return;
+      if (f === "column") {
+        var cv = String(inp.value).trim();
+        if (!cv) delete menuData.categories[ci].sections[si].column;
+        else menuData.categories[ci].sections[si].column = cv;
+        return;
+      }
+      menuData.categories[ci].sections[si][f] = inp.value.trim();
     });
     document.querySelectorAll(".item-grid input").forEach(function (inp) {
       var ci = +inp.dataset.ci;
@@ -581,13 +703,24 @@
 
   $("btn-add-cat").addEventListener("click", function () {
     syncAll();
+    var th = "default";
     menuData.categories.push({
       id: "nova-" + Date.now(),
-      title: "Nova",
+      title: "Nova categoria",
       subtitle: "",
       emoji: "📋",
-      theme: "default",
-      items: [],
+      theme: th,
+      menuLayout: "poster-burger",
+      posterHeadline: "",
+      posterPhotoTheme: themeToPosterPhoto(th),
+      posterImageUrl: "",
+      sections: [
+        {
+          title: "Geral",
+          subtitle: "",
+          items: [],
+        },
+      ],
     });
     renderCats();
   });

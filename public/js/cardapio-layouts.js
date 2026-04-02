@@ -40,9 +40,8 @@ function bindAdd(btn, item, catId, catTitle, sectionTitle, onToast) {
 }
 
 /**
- * Fotos por categoria (Pexels — URLs testadas).
- * Opcional no JSON: `posterImageUrl` na categoria sobrescreve o tema.
- * Imagens meramente ilustrativas (aviso no HTML).
+ * Uma imagem por tema, alinhada à categoria (Pexels).
+ * `posterImageUrl` na categoria substitui a bolinha; em erro, tenta-se tema → burger.
  */
 const POSTER_PHOTO_ONE = {
   burger: {
@@ -51,23 +50,23 @@ const POSTER_PHOTO_ONE = {
   },
   combo: {
     src: "https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
-    alt: "Lanche com batata frita",
+    alt: "Combo: lanche e batata frita",
   },
   pastel: {
-    src: "https://images.pexels.com/photos/410648/pexels-photo-410648.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
-    alt: "Pastéis e salgados",
+    src: "https://images.pexels.com/photos/3124181/pexels-photo-3124181.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
+    alt: "Pastéis e salgados fritos",
   },
   pizza: {
     src: "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
-    alt: "Pizza com ingredientes",
+    alt: "Pizza com queijo e calabresa",
   },
   sweet: {
     src: "https://images.pexels.com/photos/1343504/pexels-photo-1343504.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
-    alt: "Sobremesa doce",
+    alt: "Sobremesa e doces",
   },
   drinks: {
-    src: "https://images.pexels.com/photos/5946965/pexels-photo-5946965.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
-    alt: "Bebidas geladas",
+    src: "https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
+    alt: "Refrigerantes e bebidas",
   },
 };
 
@@ -160,14 +159,18 @@ function buildPosterPhotoColumn(cat) {
   const base = POSTER_PHOTO_ONE[theme] || POSTER_PHOTO_ONE.burger;
   const custom = String(cat.posterImageUrl || "").trim();
   const shot = custom ? { src: custom, alt: base.alt } : base;
-  const fallbackSrc = POSTER_PHOTO_ONE.burger.src;
+  const chain = [];
+  if (custom) chain.push(shot.src);
+  chain.push(base.src);
+  const burgerSrc = POSTER_PHOTO_ONE.burger.src;
+  if (chain[chain.length - 1] !== burgerSrc) chain.push(burgerSrc);
+  const urls = chain.filter((u, i, a) => u && a.indexOf(u) === i);
 
   const photos = document.createElement("div");
   photos.className = "burger-poster-photos";
   const fig = document.createElement("figure");
   fig.className = "burger-poster-shot burger-poster-shot--single";
   const img = document.createElement("img");
-  img.src = shot.src;
   img.alt = shot.alt;
   img.width = 360;
   img.height = 360;
@@ -175,10 +178,12 @@ function buildPosterPhotoColumn(cat) {
   img.fetchPriority = "high";
   img.decoding = "async";
   img.referrerPolicy = "no-referrer";
+  let step = 0;
+  img.src = urls[0] || burgerSrc;
   img.addEventListener("error", function onImgErr() {
-    img.removeEventListener("error", onImgErr);
-    if (img.src !== fallbackSrc) {
-      img.src = fallbackSrc;
+    step += 1;
+    if (step < urls.length) {
+      img.src = urls[step];
     }
   });
   fig.appendChild(img);

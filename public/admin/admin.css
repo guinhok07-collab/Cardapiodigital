@@ -51,7 +51,8 @@ body {
 }
 
 input,
-textarea {
+textarea,
+select {
   padding: 0.5rem;
   border-radius: 8px;
   border: 1px solid var(--border);
@@ -271,4 +272,41 @@ code {
   background: #121820;
   padding: 0.1rem 0.35rem;
   border-radius: 4px;
+}
+
+.cat-poster {
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem;
+  background: #121820;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.cat-poster-lead {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.poster-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.poster-grid .full {
+  grid-column: 1 / -1;
+}
+
+.poster-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 720px) {
+  .poster-grid {
+    grid-template-columns: 1fr;
+  }
 }
