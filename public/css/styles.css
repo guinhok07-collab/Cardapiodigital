@@ -1957,41 +1957,6 @@ body.page-home:not(.page-home--clean) {
   padding: 0.25rem 0;
 }
 
-/* Wordmark compacto na barra — POINT + do Roger */
-.home-bar-wordmark {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0;
-  line-height: 1;
-  text-decoration: none;
-  color: inherit;
-}
-
-.home-bar-wordmark__main {
-  font-family: "Bebas Neue", Impact, sans-serif;
-  font-size: 1.15rem;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  line-height: 1;
-  background: linear-gradient(95deg, #cffafe 0%, #22d3ee 40%, #fb923c 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
-}
-
-.home-bar-wordmark__sub {
-  font-family: "Inter", system-ui, sans-serif;
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #fecaca;
-  text-transform: lowercase;
-  margin-top: 0.1rem;
-}
-
 .home-bar-logo {
   max-height: 40px;
   width: auto;
@@ -2032,78 +1997,14 @@ body.page-home:not(.page-home--clean) {
   padding-top: 0.25rem;
 }
 
-/* Logo wordmark — moldura neon + POINT em gradiente + faixa “do Roger” */
-.home-brand-logo {
-  margin: 0 auto 0.25rem;
-  padding: 0;
-  max-width: min(22rem, 94vw);
-}
-
-.home-brand-logo__shell {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  width: 100%;
-  padding: 1.35rem 1.35rem 1.45rem;
-  border-radius: 1.5rem;
-  background:
-    linear-gradient(165deg, rgba(10, 8, 8, 0.92) 0%, rgba(28, 25, 23, 0.94) 100%) padding-box,
-    linear-gradient(130deg, #22d3ee 0%, #0284c7 28%, #f97316 72%, #ea580c 100%) border-box;
-  border: 3px solid transparent;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.55),
-    0 0 36px rgba(34, 211, 238, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
-}
-
-.home-brand-logo__point {
-  display: block;
-  font-family: "Bebas Neue", Impact, sans-serif;
-  font-size: clamp(2.85rem, 13vw, 4.1rem);
-  font-weight: 400;
-  line-height: 0.92;
-  letter-spacing: 0.14em;
-  padding-left: 0.12em;
+.home-intro-name {
   margin: 0;
-  text-transform: uppercase;
-  background: linear-gradient(
-    188deg,
-    #fffef7 0%,
-    #a5f3fc 22%,
-    #22d3ee 45%,
-    #fb923c 78%,
-    #fde68a 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.5));
-}
-
-.home-brand-logo__ribbon {
-  display: inline-block;
-  padding: 0.38rem 1.45rem 0.42rem;
-  border-radius: 0.4rem;
-  background: linear-gradient(180deg, #f87171 0%, #dc2626 45%, #991b1b 100%);
-  box-shadow:
-    0 5px 16px rgba(185, 28, 28, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transform: rotate(-0.6deg);
-}
-
-.home-brand-logo__sub {
-  display: block;
-  font-family: "Inter", system-ui, sans-serif;
-  font-size: clamp(0.98rem, 3.8vw, 1.2rem);
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-size: clamp(1.35rem, 4.2vw, 1.65rem);
+  font-weight: 600;
   color: #fffbeb;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-  text-transform: none;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .home-intro-lead {
@@ -2687,8 +2588,8 @@ body.page-home:not(.page-home--clean) {
     -webkit-line-clamp: 2;
   }
 
-  .page-home--clean .home-brand-logo__point {
-    font-size: clamp(2.4rem, 11vw, 3.2rem);
+  .page-home--clean .home-intro-name {
+    font-size: clamp(1.25rem, 5.5vw, 1.5rem);
   }
 }
 
