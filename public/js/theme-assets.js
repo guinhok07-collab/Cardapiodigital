@@ -33,7 +33,7 @@ export const THEME_TOP_STRIP = {
     "https://images.unsplash.com/photo-1544145945-f0a224ac7a5e?auto=format&fit=crop&w=960&h=280&q=82",
 };
 
-/** Overlay escuro + leve tom âmbar (água na boca, texto legível) */
+/** Overlay mais leve no meio para a foto “saltar”; topo/rodapé escuros para o texto */
 export function homeHeroOverlayGradient() {
-  return "linear-gradient(180deg, rgba(15,23,42,.88) 0%, rgba(124,45,18,.38) 40%, rgba(15,23,42,.68) 68%, rgba(2,6,23,.95) 100%)";
+  return "linear-gradient(180deg, rgba(15,23,42,.78) 0%, rgba(234,88,12,.18) 28%, rgba(124,45,18,.12) 48%, rgba(15,23,42,.42) 72%, rgba(2,6,23,.92) 100%)";
 }
