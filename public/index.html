@@ -7,45 +7,41 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="page-home">
-  <div class="top-hero-wrap" aria-hidden="false">
-    <header class="top-bar">
-      <div class="top-bar-inner">
-        <div class="top-bar-row1">
-          <a href="index.html" class="top-bar-brand-link" id="top-brand-link">
-            <img id="top-brand-logo" class="top-brand-logo hidden" alt="" width="140" height="42" decoding="async" />
-            <span id="top-brand" class="top-bar-brand">Cardápio</span>
-          </a>
-          <a class="cart-link" href="carrinho.html">
-            <span aria-hidden="true">🛒</span> Carrinho
-            <span class="cart-badge is-empty" id="cart-badge">0</span>
-          </a>
-        </div>
-        <nav class="top-menu" aria-label="Menu principal">
-          <a href="index.html">Início</a>
-          <a href="index.html#cardapio">Cardápio</a>
-          <a href="carrinho.html">Carrinho</a>
-        </nav>
+  <header class="home-top-bar">
+    <div class="home-top-inner">
+      <div class="top-bar-row1">
+        <a href="index.html" class="top-bar-brand-link" id="top-brand-link">
+          <img id="top-brand-logo" class="top-brand-logo hidden" alt="" width="140" height="42" decoding="async" />
+          <span id="top-brand" class="top-bar-brand">Cardápio</span>
+        </a>
+        <a class="cart-link" href="carrinho.html">
+          <span aria-hidden="true">🛒</span> Carrinho
+          <span class="cart-badge is-empty" id="cart-badge">0</span>
+        </a>
       </div>
-    </header>
+      <nav class="home-quick-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="carrinho.html">Carrinho</a>
+      </nav>
+      <nav class="home-cat-strip" id="home-cat-strip" aria-label="Categorias do cardápio"></nav>
+    </div>
+  </header>
 
-    <header class="hero hero-compact">
-      <h1 id="store-name" class="store-name">Cardápio Digital</h1>
-      <p id="headline" class="headline">Monte seu pedido</p>
-      <p id="subhead" class="subhead"></p>
-      <ol class="steps-hint">
-        <li><span>1</span> Categoria</li>
-        <li><span>2</span> Itens</li>
-        <li><span>3</span> Carrinho</li>
-        <li><span>4</span> WhatsApp</li>
-      </ol>
-    </header>
-  </div>
-
-  <main class="main" id="cardapio">
-    <h2 class="section-title">Cardápio</h2>
-    <p class="section-lead">Toque para ver itens e preços.</p>
-    <div id="category-grid" class="category-grid"></div>
-  </main>
+  <section class="home-hero-stage" id="cardapio">
+    <div class="home-hero-bg" id="home-hero-bg" aria-hidden="true"></div>
+    <div class="home-hero-panel">
+      <div class="home-hero-text">
+        <h1 id="store-name" class="store-name">Cardápio Digital</h1>
+        <p id="headline" class="headline">Monte seu pedido</p>
+        <p id="subhead" class="subhead"></p>
+      </div>
+      <div class="home-categories-wrap">
+        <h2 class="home-cat-heading">Categorias</h2>
+        <p class="home-cat-lead">Toque para ver itens e preços.</p>
+        <div id="category-grid" class="category-grid category-grid--compact"></div>
+      </div>
+    </div>
+  </section>
 
   <a class="cart-fab" href="carrinho.html" data-cart-fab hidden>
     <span aria-hidden="true">🛒</span> Carrinho <strong data-cart-fab-count>0</strong>

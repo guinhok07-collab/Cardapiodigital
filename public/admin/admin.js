@@ -69,6 +69,7 @@
     $("f-pix-qr").value = s.pixQrUrl || "";
     $("f-card-link").value = s.paymentCardLink || "";
     $("f-payment-note").value = s.paymentNote || "";
+    $("f-home-hero").value = s.homeHeroImage || "";
     toggleLogoFields();
   }
 
@@ -99,6 +100,7 @@
     opt("pixQrUrl", $("f-pix-qr").value);
     opt("paymentCardLink", $("f-card-link").value);
     opt("paymentNote", $("f-payment-note").value);
+    opt("homeHeroImage", $("f-home-hero").value);
   }
 
   function renderItem(ci, ii, item, si) {
@@ -536,6 +538,7 @@
             "f-pix-qr",
             "f-card-link",
             "f-payment-note",
+            "f-home-hero",
           ].forEach(function (id) {
             var el = $(id);
             if (el) el.addEventListener("input", readStoreForm);
