@@ -11,15 +11,17 @@ function applyHomeHeroImage(store) {
   const el = document.getElementById("home-hero-bg");
   if (!el) return;
   const url = (store.homeHeroImage || "").trim();
+  document.body.classList.toggle("home-has-hero-img", Boolean(url));
   if (url) {
     const u = JSON.stringify(url);
+    /* Camada 1: overlay escuro para leitura; camada 2: foto em cover */
     el.style.backgroundImage = [
-      "linear-gradient(180deg, rgba(15,23,42,.88) 0%, rgba(15,23,42,.75) 50%, rgba(2,6,23,.92) 100%)",
+      "linear-gradient(180deg, rgba(15,23,42,.82) 0%, rgba(15,23,42,.55) 38%, rgba(2,6,23,.88) 100%)",
       `url(${u})`,
     ].join(", ");
-    el.style.backgroundSize = "auto, cover";
+    el.style.backgroundSize = "cover, cover";
     el.style.backgroundRepeat = "no-repeat, no-repeat";
-    el.style.backgroundPosition = "center, center center";
+    el.style.backgroundPosition = "center, center";
   } else {
     el.style.backgroundImage = "";
     el.style.backgroundSize = "";
