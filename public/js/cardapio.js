@@ -192,7 +192,7 @@ function buildItemCard(item, catId, catTitle, sectionTitle, categoryTheme) {
 function renderCategoryPicker(root, categories, storeName) {
   applyCategoryTheme("default");
   clearCategoryBackground();
-  document.title = `Cardápio — ${storeName || "Cardápio"}`;
+  document.title = `Cardápio — ${storeName || "Point do Roger"}`;
   const titleEl = document.getElementById("cat-title");
   if (titleEl) titleEl.textContent = "Escolha uma categoria";
   const em = document.getElementById("cat-emoji");
@@ -249,7 +249,7 @@ async function renderCardapio() {
     }
     applyCategoryTheme(cat.theme);
     applyCategoryBackground(cat);
-    document.title = `${cat.title} — ${store.name || "Cardápio"}`;
+    document.title = `${cat.title} — ${store.name || "Point do Roger"}`;
     const titleNode = document.getElementById("cat-title");
     if (titleNode) titleNode.textContent = cat.title;
     const em = document.getElementById("cat-emoji");

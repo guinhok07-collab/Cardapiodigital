@@ -81,7 +81,7 @@ export function formatMoney(n) {
 }
 
 export function buildWhatsappText({ name, store, lines, customer }) {
-  const storeName = name || "Cardápio Digital";
+  const storeName = name || "Point do Roger";
   const waLines = (lines || [])
     .map((L) => {
       const sub = (Number(L.price) || 0) * (L.qty || 0);

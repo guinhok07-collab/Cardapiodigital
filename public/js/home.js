@@ -31,7 +31,7 @@ function applyHomeHeroImage(store) {
 function renderHome(data) {
   const store = data.store || {};
   document.getElementById("store-name").textContent =
-    store.name || "Cardápio Digital";
+    store.name || "Point do Roger";
 
   const tagline = (store.headline || "").trim();
   const tagEl = document.getElementById("headline");
@@ -64,7 +64,7 @@ function renderHome(data) {
     }
     if (brand) {
       brand.classList.remove("hidden");
-      brand.textContent = store.name || "Cardápio";
+      brand.textContent = store.name || "Point do Roger";
     }
   }
 

@@ -206,7 +206,7 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   openWhatsappOrder({
     whatsappDigits: store.whatsapp || "5511999999999",
     text: buildWhatsappText({
-      name: store.name || "Cardápio Digital",
+      name: store.name || "Point do Roger",
       store,
       lines,
       customer,

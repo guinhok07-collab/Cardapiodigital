@@ -82,7 +82,7 @@
 
   function readStoreForm() {
     menuData.store = {
-      name: $("f-name").value.trim() || "Cardápio Digital",
+      name: $("f-name").value.trim() || "Point do Roger",
       headline: $("f-headline").value.trim() || "Monte seu pedido",
       subhead: $("f-subhead").value.trim() || "",
       whatsapp: $("f-wa").value.replace(/\D/g, "") || "5511999999999",
