@@ -49,11 +49,11 @@ const POSTER_PHOTO_ONE = {
     alt: "Hambúrguer artesanal",
   },
   combo: {
-    src: "https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
-    alt: "Combo: lanche e batata frita",
+    src: "https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
+    alt: "Combo: hambúrguer, batata frita e molho",
   },
   pastel: {
-    src: "https://images.pexels.com/photos/3124181/pexels-photo-3124181.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
+    src: "https://images.pexels.com/photos/1059943/pexels-photo-1059943.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
     alt: "Pastéis e salgados fritos",
   },
   pizza: {
@@ -65,8 +65,8 @@ const POSTER_PHOTO_ONE = {
     alt: "Sobremesa e doces",
   },
   drinks: {
-    src: "https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
-    alt: "Refrigerantes e bebidas",
+    src: "https://images.pexels.com/photos/5947030/pexels-photo-5947030.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop",
+    alt: "Bebidas geladas e refrescos",
   },
 };
 
