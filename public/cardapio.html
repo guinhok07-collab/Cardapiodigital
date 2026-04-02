@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="page-cardapio page-cardapio--clean">
+<body class="page-cardapio page-cardapio--clean has-app-tabbar">
   <div id="cardapio-hero-strip" class="cardapio-hero-strip is-hidden" aria-hidden="true"></div>
   <header class="cardapio-bar">
     <div class="cardapio-bar-inner">
@@ -38,6 +38,24 @@
   <footer class="site-footer cardapio-site-footer">
     <p class="footnote">Point do Roger</p>
   </footer>
+
+  <nav class="app-tabbar" aria-label="Menu do app">
+    <a href="index.html" class="app-tab">
+      <span class="app-tab-icon" aria-hidden="true">🏠</span>
+      <span class="app-tab-label">Início</span>
+    </a>
+    <a href="index.html#cardapio" class="app-tab" aria-current="page">
+      <span class="app-tab-icon" aria-hidden="true">📋</span>
+      <span class="app-tab-label">Cardápio</span>
+    </a>
+    <a href="carrinho.html" class="app-tab app-tab--cart">
+      <span class="app-tab-icon-wrap">
+        <span class="app-tab-icon" aria-hidden="true">🛒</span>
+        <span class="cart-badge is-empty">0</span>
+      </span>
+      <span class="app-tab-label">Carrinho</span>
+    </a>
+  </nav>
 
   <script src="js/cardapio.js" type="module"></script>
 </body>

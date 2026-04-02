@@ -1,7 +1,7 @@
 import { getItemCount } from "./cart.js";
 
 function updateBadge() {
-  document.querySelectorAll("#cart-badge").forEach((el) => {
+  document.querySelectorAll(".cart-badge").forEach((el) => {
     const n = getItemCount();
     el.textContent = String(n);
     el.classList.toggle("is-empty", n === 0);

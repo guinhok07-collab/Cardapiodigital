@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="page-home page-home--clean">
+<body class="page-home page-home--clean has-app-tabbar">
   <header class="home-bar">
     <div class="home-bar-inner">
       <a href="index.html" class="home-bar-brand" id="top-brand-link">
@@ -50,6 +50,24 @@
     <p id="footer-address" class="footer-address hidden"></p>
     <p class="home-foot-note">Point do Roger</p>
   </footer>
+
+  <nav class="app-tabbar" aria-label="Menu do app">
+    <a href="index.html" class="app-tab" aria-current="page">
+      <span class="app-tab-icon" aria-hidden="true">🏠</span>
+      <span class="app-tab-label">Início</span>
+    </a>
+    <a href="index.html#cardapio" class="app-tab">
+      <span class="app-tab-icon" aria-hidden="true">📋</span>
+      <span class="app-tab-label">Cardápio</span>
+    </a>
+    <a href="carrinho.html" class="app-tab app-tab--cart">
+      <span class="app-tab-icon-wrap">
+        <span class="app-tab-icon" aria-hidden="true">🛒</span>
+        <span class="cart-badge is-empty">0</span>
+      </span>
+      <span class="app-tab-label">Carrinho</span>
+    </a>
+  </nav>
 
   <div id="welcome-modal" class="welcome-modal hidden" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-desc">
     <div class="welcome-modal-backdrop" data-welcome-close tabindex="-1"></div>

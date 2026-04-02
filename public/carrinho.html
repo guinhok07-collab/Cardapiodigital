@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="page-carrinho">
+<body class="page-carrinho has-app-tabbar">
   <header class="bar-top">
     <nav class="top-menu top-menu--subpage" aria-label="Menu principal">
       <a href="index.html">Início</a>
@@ -89,6 +89,24 @@
       </section>
     </div>
   </main>
+
+  <nav class="app-tabbar" aria-label="Menu do app">
+    <a href="index.html" class="app-tab">
+      <span class="app-tab-icon" aria-hidden="true">🏠</span>
+      <span class="app-tab-label">Início</span>
+    </a>
+    <a href="index.html#cardapio" class="app-tab">
+      <span class="app-tab-icon" aria-hidden="true">📋</span>
+      <span class="app-tab-label">Cardápio</span>
+    </a>
+    <a href="carrinho.html" class="app-tab app-tab--cart" aria-current="page">
+      <span class="app-tab-icon-wrap">
+        <span class="app-tab-icon" aria-hidden="true">🛒</span>
+        <span class="cart-badge is-empty">0</span>
+      </span>
+      <span class="app-tab-label">Carrinho</span>
+    </a>
+  </nav>
 
   <div id="order-thanks" class="order-thanks hidden" role="dialog" aria-modal="true" aria-labelledby="order-thanks-title">
     <div class="order-thanks-inner">

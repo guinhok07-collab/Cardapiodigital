@@ -1,4 +1,5 @@
 import { loadMenuData } from "./data-loader.js";
+import { initCartBadge } from "./cart-badge.js";
 import {
   getLines,
   setQty,
@@ -263,6 +264,8 @@ function showOrderThanks() {
   el.classList.remove("hidden");
   document.body.classList.add("order-thanks-open");
 }
+
+initCartBadge();
 
 loadMenuData()
   .then((data) => {
