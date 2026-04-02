@@ -2,6 +2,11 @@ import { loadMenuData } from "./data-loader.js";
 import { initCartBadge } from "./cart-badge.js";
 import { DEFAULT_HOME_HERO, homeHeroOverlayGradient } from "./theme-assets.js";
 
+const WELCOME_SESSION_KEY = "cardapio_welcome_seen_v1";
+
+const WELCOME_WA_TEXT =
+  "Olá! Estou com dúvidas sobre o cardápio ou pedido. Pode me ajudar? 😊";
+
 function escapeHtml(s) {
   const d = document.createElement("div");
   d.textContent = s == null ? "" : String(s);
@@ -105,11 +110,53 @@ function renderHome(data) {
   });
 }
 
+function setupWelcomeModal(store) {
+  const modal = document.getElementById("welcome-modal");
+  if (!modal) return;
+
+  if (sessionStorage.getItem(WELCOME_SESSION_KEY)) {
+    modal.classList.add("hidden");
+    return;
+  }
+
+  const waDigits = String(store.whatsapp || "")
+    .replace(/\D/g, "")
+    .trim();
+  const wa = waDigits || "5511999999999";
+  const waLink = document.getElementById("welcome-wa-link");
+
+  let onEscape;
+  const close = () => {
+    sessionStorage.setItem(WELCOME_SESSION_KEY, "1");
+    modal.classList.add("hidden");
+    document.body.classList.remove("welcome-modal-open");
+    if (onEscape) document.removeEventListener("keydown", onEscape);
+  };
+
+  if (waLink) {
+    waLink.href = `https://wa.me/${wa}?text=${encodeURIComponent(WELCOME_WA_TEXT)}`;
+    waLink.addEventListener("click", () => close());
+  }
+
+  modal.querySelectorAll("[data-welcome-close]").forEach((el) => {
+    el.addEventListener("click", close);
+  });
+
+  onEscape = (e) => {
+    if (e.key === "Escape") close();
+  };
+  document.addEventListener("keydown", onEscape);
+
+  modal.classList.remove("hidden");
+  document.body.classList.add("welcome-modal-open");
+}
+
 async function init() {
   initCartBadge();
   try {
     const data = await loadMenuData();
     renderHome(data);
+    setupWelcomeModal(data.store || {});
   } catch (e) {
     document.getElementById("category-grid").innerHTML =
       `<p class="error-msg">Erro ao carregar o cardápio.</p>`;

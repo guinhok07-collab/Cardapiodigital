@@ -51,6 +51,32 @@
     <p class="home-foot-note">Point do Roger</p>
   </footer>
 
+  <div id="welcome-modal" class="welcome-modal hidden" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-describedby="welcome-desc">
+    <div class="welcome-modal-backdrop" data-welcome-close tabindex="-1"></div>
+    <div class="welcome-modal-card">
+      <div class="roger-bot" aria-hidden="true">
+        <div class="roger-bot-antenna"></div>
+        <div class="roger-bot-head">
+          <span class="roger-bot-eyes"><span></span><span></span></span>
+          <span class="roger-bot-mouth"></span>
+        </div>
+        <div class="roger-bot-badge">R</div>
+      </div>
+      <h2 id="welcome-title" class="welcome-modal-title">E aí, bem-vindo!</h2>
+      <p id="welcome-desc" class="welcome-modal-lead">
+        Sou o <strong>Rogerbot</strong> — tô aqui pra curtir o cardápio com você. Escolhe à vontade!
+      </p>
+      <p class="welcome-modal-help">Em que podemos ajudar?</p>
+      <p class="welcome-modal-hint">Dúvida no pedido, horário ou ingrediente? Chama a equipe.</p>
+      <div class="welcome-modal-actions">
+        <a id="welcome-wa-link" class="btn-welcome-wa" href="#" target="_blank" rel="noopener noreferrer">
+          <span aria-hidden="true">💬</span> Tenho dúvidas — WhatsApp
+        </a>
+        <button type="button" class="btn-welcome-ok" data-welcome-close>Ver cardápio</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/home.js" type="module"></script>
 </body>
 </html>

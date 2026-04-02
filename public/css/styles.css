@@ -2207,6 +2207,283 @@ body.page-home:not(.page-home--clean) {
   color: #cbd5e1;
 }
 
+/* Boas-vindas — Rogerbot rosado + WhatsApp suporte */
+.welcome-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(1rem, env(safe-area-inset-top, 0px)) 1rem max(1rem, env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+
+.welcome-modal:not(.hidden) {
+  pointer-events: auto;
+}
+
+.welcome-modal.hidden {
+  display: none !important;
+}
+
+body.welcome-modal-open {
+  overflow: hidden;
+}
+
+.welcome-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(88, 28, 64, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.welcome-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  padding: 1.5rem 1.35rem 1.4rem;
+  border-radius: 22px;
+  background: linear-gradient(165deg, #fff7fb 0%, #fce7f3 38%, #fbcfe8 100%);
+  border: 2px solid rgba(244, 114, 182, 0.65);
+  box-shadow:
+    0 20px 50px rgba(157, 23, 77, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  text-align: center;
+  color: #831843;
+  animation: welcome-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes welcome-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.roger-bot {
+  position: relative;
+  width: 100px;
+  height: 92px;
+  margin: 0 auto 0.85rem;
+}
+
+.roger-bot-antenna {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  height: 18px;
+  margin-left: -2px;
+  background: linear-gradient(180deg, #f472b6, #db2777);
+  border-radius: 4px;
+  animation: roger-antenna 2s ease-in-out infinite;
+}
+
+.roger-bot-antenna::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  background: #f9a8d4;
+  border: 2px solid #db2777;
+  border-radius: 50%;
+}
+
+@keyframes roger-antenna {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+.roger-bot-head {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 84px;
+  height: 72px;
+  margin-left: -42px;
+  background: linear-gradient(145deg, #fbcfe8 0%, #f9a8d4 55%, #f472b6 100%);
+  border-radius: 20px;
+  border: 3px solid #be185d;
+  box-shadow: 0 6px 0 #9d174d, 0 10px 20px rgba(190, 24, 93, 0.25);
+  animation: roger-float 2.8s ease-in-out infinite;
+}
+
+@keyframes roger-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.roger-bot-eyes {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.roger-bot-eyes span {
+  width: 12px;
+  height: 14px;
+  background: #1e293b;
+  border-radius: 50%;
+  animation: roger-blink 4s step-end infinite;
+}
+
+.roger-bot-eyes span:last-child {
+  animation-delay: 0.1s;
+}
+
+@keyframes roger-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  94% {
+    transform: scaleY(0.1);
+  }
+}
+
+.roger-bot-mouth {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  width: 28px;
+  height: 12px;
+  margin-left: -14px;
+  border: 3px solid #831843;
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+}
+
+.roger-bot-badge {
+  position: absolute;
+  right: -4px;
+  bottom: 8px;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(145deg, #fff, #fce7f3);
+  border: 2px solid #db2777;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #be185d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(190, 24, 93, 0.3);
+}
+
+.welcome-modal-title {
+  margin: 0 0 0.45rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #9d174d;
+}
+
+.welcome-modal-lead {
+  margin: 0 0 0.65rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #831843;
+}
+
+.welcome-modal-lead strong {
+  color: #be185d;
+}
+
+.welcome-modal-help {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #be185d;
+}
+
+.welcome-modal-hint {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(131, 24, 67, 0.75);
+}
+
+.welcome-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.btn-welcome-wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 48px;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #25d366 0%, #128c7e 100%);
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 6px 18px rgba(18, 140, 126, 0.45);
+}
+
+.btn-welcome-wa:hover {
+  filter: brightness(1.05);
+}
+
+.btn-welcome-ok {
+  min-height: 46px;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 2px solid rgba(190, 24, 93, 0.45);
+  background: rgba(255, 255, 255, 0.85);
+  color: #9d174d;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.btn-welcome-ok:hover {
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-modal-card,
+  .roger-bot-head,
+  .roger-bot-antenna {
+    animation: none;
+  }
+
+  .roger-bot-eyes span {
+    animation: none;
+  }
+}
+
 /* ========== Cardápio (itens) — mesmo fundo da home (foto + overlay escuro) ========== */
 .page-cardapio.page-cardapio--clean {
   --cat-surface: rgba(15, 23, 42, 0.88);
